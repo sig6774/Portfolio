@@ -1,0 +1,319 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+   <body>
+      
+   <div class="fh5co-loader"></div>
+   
+   <div id="page">
+   <nav class="fh5co-nav" role="navigation">
+      <!-- <div class="top-menu"> -->
+         <div class="container">
+            <div class="row">
+               <div class="col-xs-12 text-center logo-wrap">
+                  <div id="fh5co-logo"><a href="/main"><span>L</span>ook <span>A</span>fter a Child<span>.</span></a></div>
+               </div>
+               <div class="col-xs-12 text-center menu-1 menu-wrap">
+                  <ul>
+                     <li><a href="/main">Home</a></li>
+                     <li class="active"><a href="/about">About Us</a></li>
+                     <li><a href="/results">Maps</a></li>
+                     <li class="has-dropdown">
+                                <a href="/inquire">Data Handling</a>
+                                <ul class="dropdown">
+                           <li><a href="/inquire">지역조회</a></li>
+                           <li><a href="/searchID">ID조회</a></li>
+                           <li><a href="/putData">신고접수</a></li>
+                        </ul>
+                     </li>
+                     <li><a href="/diary">Diary</a></li>
+                     <li><a href="/sketch">Sketch</a></li>
+                  </ul>
+               </div>
+            </div>
+            
+         </div>
+      <!-- </div> -->
+   </nav>
+
+
+   <header id="fh5co-header" class="fh5co-cover js-fullheight" role="banner" style="background-image: url(static/images/sakura.jpg);" data-stellar-background-ratio="0.5">
+      <div class="overlay"></div>
+      <div class="container">
+         <div class="row">
+            <div class="col-md-12 text-center">
+               <div class="display-t js-fullheight">
+                  <div class="display-tc js-fullheight animate-box" data-animate-effect="fadeIn">
+                     <h1>About <em>our</em> Team</h1><br>
+                     <h2>문경록 안수진 민아영 김동준 유재우 김예림 이아리</h2>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+   </header>
+
+
+   <div id="fh5co-about" class="fh5co-section">
+      <div class="container">
+         <div class="row">
+            <div class="col-md-6 col-md-pull-4 img-wrap animate-box" data-animate-effect="fadeInLeft">
+               <img src="static/images/la2.jpeg" style="float:left; margin:0 0 0 200px; width:810px; height:520px;">
+            </div>
+            <div class="col-md-5 col-md-push-1 animate-box">
+               <div class="section-heading">
+                  <h2>Team. <span style="color:red">L</span>ook <span style="color:red">A</span>fter</h2>
+                  <p>저희는 빅리더 AI 아카데미의 수강생으로 전국 각지에서 모였으며 AI 알고리즘을 이용하여 아동학대라는 사회문제를 해결하고자 하는 마음으로 한자리에 모이게 되었습니다.</p>
+                  <p>(내용 추가하기)</p>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+
+   <div id="fh5co-blog" class="fh5co-section">
+      <div class="container">
+         <div class="row">
+            <div class="intro">
+               <div class="fh5co-blog animate-box">
+                  <a class="blog-bg" style="background-image: url(/static/images/moon.png);"></a>
+                  <a class="blog-bg2" style="background-image: url(/static/images/moon2.png);"></a>
+                  <div class="blog-text">
+                     <h3>SIG <br>(문경록, 26세)</h3>
+                     <p>이 팀의 리더. 파이썬 담당.<br>벙거지 모자가 꽤 잘 어울리는 타입. 까대기의 본좌.</p>
+                     <p>"후....~"</p>
+                  </div>
+               </div>
+            </div>
+            <div class="intro2">
+               <div class="fh5co-blog animate-box">
+                  <a class="blog-bg" style="background-image: url(/static/images/jin.png);"></a>
+                  <a class="blog-bg2" style="background-image: url(/static/images/jin2.png);"></a>
+                  <div class="blog-text">
+                     <h3>Moid <br>(안수진, 26세)</h3>
+                     <p>알고리즘 개발 담당.<br>여러 스타일의 옷가지들이 많은 타입.</p>
+                     <p>"너 그거 하지마"</p>
+                  </div>
+               </div>
+            </div>
+            <div class="intro">
+               <div class="fh5co-blog animate-box">
+                  <a class="blog-bg" style="background-image: url(/static/images/young.png);"></a>
+                  <a class="blog-bg2" style="background-image: url(/static/images/young2.png);"></a>
+                  <div class="blog-text">
+                     <h3>Pandas as pd <br>(민아영, 25세)</h3>
+                     <p>자연어처리 및 시각화 담당.<br>나이차이 많이나는 부산남자 좋아하는 타입.</p>
+                     <p>"명함 주세욧!!!!"</p>
+                  </div>
+               </div>
+            </div>
+            <div class="intro2">
+               <div class="fh5co-blog animate-box">
+                  <a class="blog-bg" style="background-image: url(/static/images/jun.png);"></a>
+                  <a class="blog-bg2" style="background-image: url(/static/images/jun2.png);"></a>
+                  <div class="blog-text">
+                     <h3>Grid <br>(김동준, 25세)</h3>
+                     <p>알고리즘 개발 담당.<br>아침에 운동가는 미친좌. 비를 맞으면 안되는 타입.</p>
+                     <p>"이모~ 밥 한공기 추가요"</p>
+                  </div>
+               </div>
+            </div>
+            <div class="intro">
+               <div class="fh5co-blog animate-box">
+                  <a class="blog-bg" style="background-image: url(/static/images/yoo.png);"></a>
+                  <a class="blog-bg2" style="background-image: url(/static/images/yoo2.png);"></a>
+                  <div class="blog-text">
+                     <h3>Tensorflow as tf <br>(유재우, 32세)</h3>
+                     <p>수령동무. 전체 총괄 담당.<br>귀여운 포즈 시키면 싫어하는거 같은데 제일 잘하는 타입. <br></p>
+                     <p>"훌륭하군."</p>
+                  </div>
+               </div>
+            </div>
+            <div class="intro2">
+               <div class="fh5co-blog animate-box">
+                  <a class="blog-bg" style="background-image: url(/static/images/ye.png);"></a>
+                  <a class="blog-bg2" style="background-image: url(/static/images/ye2.png);"></a>
+                  <div class="blog-text">
+                     <h3>ReLU <br>(김예림, 23세)</h3>
+                     <p>웹 및 크롤링 담당.<br>몸 쪽 깊숙한 직구 날리는 타입. 성격이 이름값함.</p>
+                     <p>"쏘쌛~~~ 눈물 괄괄쓰~~"</p>
+                  </div>
+               </div>
+            </div>
+            <div class="intro">
+               <div class="fh5co-blog animate-box">
+                  <a class="blog-bg" style="background-image: url(/static/images/ari.png);"></a>
+                  <a class="blog-bg2" style="background-image: url(/static/images/ari2.png);"></a>
+                  <div class="blog-text">
+                     <h3>Numpy as np <br>(이아리, 25세)</h3>
+                     <p>자연어처리 및 피피티 담당.<br>관심 받는거 좋아하는 타입.</p>
+                     <p>"너무 좋아요."</p>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+      
+   <div id="fh5co-timeline">
+      <div class="container">
+         <div class="row">
+            <div class="col-md-12 col-md-offset-0">
+               <ul class="timeline animate-box">
+                  <li class="timeline-heading text-center animate-box">
+                     <div><h3>Process<h3></div>
+                  </li>
+                  <li class="animate-box timeline-unverted">
+                     <div class="timeline-badge"><i class="icon-genius"></i></div>
+                     <div class="timeline-panel">
+                        <div class="timeline-heading">
+                           <h3 class="timeline-title">기획안 작성</h3>
+                        </div>
+                        <div class="timeline-body">
+                           <p>프로젝트 주제 설정, 개발 배경 및 필요성<br>문제의 본질에 대한 접근 및 분석, 사회적/경제적 가치 탐색</p>
+                        </div>
+                     </div>
+                  </li>
+                  <li class="timeline-inverted animate-box">
+                     <div class="timeline-badge"><i class="icon-genius"></i></div>
+                     <div class="timeline-panel">
+                        <div class="timeline-heading">
+                           <h3 class="timeline-title">자료 조사</h3>
+                        </div>
+                        <div class="timeline-body">
+                           <p>국내 및 해외 사례와 관련 논문 리서치<br>국내 아동학대 관리 기관 탐색 및 인터뷰 요청</p>
+                        </div>
+                     </div>
+                  </li>
+                  <li class="animate-box timeline-unverted">
+                     <div class="timeline-badge"><i class="icon-genius"></i></div>
+                     <div class="timeline-panel">
+                        <div class="timeline-heading">
+                           <h3 class="timeline-title">데이터 수집 및 전처리</h3>
+                        </div>
+                        <div class="timeline-body">
+                           <p>학대 관련 변수 발굴, Feature Engineering<br>데이터 획득, 추가 데이터 요청</p>
+                        </div>
+                     </div>
+                  </li>
+                  <li class="timeline-inverted animate-box">
+                     <div class="timeline-badge"><i class="icon-genius"></i></div>
+                     <div class="timeline-panel">
+                        <div class="timeline-heading">
+                           <h3 class="timeline-title">데이터 분석</h3>
+                        </div>
+                        <div class="timeline-body">
+                           <p>데이터 전처리, 분석 모델 탐색 및 결정<br>시각화, 정형/비정형 데이터 처리</p>
+                        </div>
+                     </div>
+                  </li>
+                  <li class="animate-box timeline-unverted">
+                     <div class="timeline-badge"><i class="icon-genius"></i></div>
+                     <div class="timeline-panel">
+                        <div class="timeline-heading">
+                           <h3 class="timeline-title">모델링</h3>
+                        </div>
+                        <div class="timeline-body">
+                           <p>Logistic Regression, Decision Tree<br>Random Forest, XGBoost</p>
+                        </div>
+                     </div>
+                  </li>
+                  <li class="timeline-inverted animate-box">
+                     <div class="timeline-badge"><i class="icon-genius"></i></div>
+                     <div class="timeline-panel">
+                        <div class="timeline-heading">
+                           <h3 class="timeline-title">웹 페이지 구현</h3>
+                        </div>
+                        <div class="timeline-body">
+                           <p>아동학대 예측 서비스의 프로토타입, 분석모델과의 연동<br>새로운 학대 데이터의 입력 및 학습</p>
+                        </div>
+                     </div>
+                  </li>
+                </ul>
+            </div>
+         </div>
+      </div>
+   </div>
+
+
+<!--
+   <div id="fh5co-started" class="fh5co-section animate-box" style="background-image: url(images/hero_1.jpeg);" data-stellar-background-ratio="0.5">
+      <div class="overlay"></div>
+      <div class="container">
+         <div class="row animate-box">
+            <div class="col-md-8 col-md-offset-2 text-center fh5co-heading">
+               <h2>Book a Table</h2>
+               <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Recusandae enim quae vitae cupiditate, sequi quam ea id dolor reiciendis consectetur repudiandae. Rem quam, repellendus veniam ipsa fuga maxime odio? Eaque!</p>
+               <p><a href="mailto:info@yourdomainname.com" class="btn btn-primary btn-outline">Contact Us</a></p>
+            </div>
+         </div>
+      </div>
+   </div>
+-->
+<footer id="fh5co-footer" role="contentinfo" class="fh5co-section">
+      <div class="container">
+         <div class="row row-pb-md">
+            <div class="col-md-4 fh5co-widget">
+               <h4>Project Mission</h4>
+               <p>1차적으로 피해아동들을 발생 가능한 재학대로부터 보호하며, 2차적으로는 사후관리와 인력의 효율성을 증가시킨다.</p>
+            </div>
+            <div class="col-md-2 col-md-push-1 fh5co-widget">
+               <h4>contents</h4>
+               <ul class="fh5co-footer-links">
+                  <li><a href="/main">Home</a></li>
+                  <li><a href="/about">About Us</a></li>
+                  <li><a href="/inquire">Data Handling</a></li>
+                  <li><a href="/test">Test</a></li>
+                  <li><a href="/diary">Diary</a></li>
+                  <li><a href="/sketch">Sketch</a></li>
+               </ul>
+            </div>
+            <div class="col-md-2 col-md-push-1 fh5co-widget">
+               <h4>아동학대 지도</h4>
+               <ul class="fh5co-footer-links">
+                  <li><a href="/results">시/도</a></li>
+                  <li><a href="/results2">시/군/구</a></li>
+
+               </ul>
+            </div>
+
+            <div class="col-md-4 col-md-push-1 fh5co-widget">
+               <h4>Contact Information</h4>
+               <ul class="fh5co-footer-links">
+                  <li>Team, Look After</li>
+                  <li>통영리스타트플랫폼</li>
+                  <li>010 2836 5786</li>
+                  <li>yrk3224@naver.com</li>
+               </ul>
+            </div>
+
+         </div>
+
+         <div class="row copyright">
+            <div class="col-md-12 text-center">
+               <p>
+                  <small class="block">&copy; 2020 Look After a Child.</small>
+                  <small class="block">thanks :)</small>
+               </p>
+               <p>
+                  <ul class="fh5co-social-icons">
+                     <li><a href="#"><i class="icon-twitter2"></i></a></li>
+                     <li><a href="#"><i class="icon-facebook2"></i></a></li>
+                     <li><a href="#"><i class="icon-linkedin2"></i></a></li>
+                     <li><a href="#"><i class="icon-dribbble2"></i></a></li>
+                  </ul>
+               </p>
+            </div>
+         </div>
+
+      </div>
+   </footer>
+
+
+   <div class="gototop js-top">
+      <a href="#" class="js-gotop"><i class="icon-arrow-up22"></i></a>
+   </div>
+
+   </body>
+</html>
+{% endblock %}

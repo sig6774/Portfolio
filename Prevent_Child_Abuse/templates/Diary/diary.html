@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+{% extends 'layout.html' %}
+
+{% block content %}
+<html lang="en">
+	<body>
+
+	<div class="fh5co-loader"></div>
+
+	<div id="page">
+	<nav class="fh5co-nav" role="navigation">
+        <div class="container">
+            <div class="row">
+                <div class="col-xs-12 text-center logo-wrap">
+                    <div id="fh5co-logo"><a href="/main"><span>L</span>ook <span>A</span>fter a Child<span>.</span></a></div>
+                </div>
+                <div class="col-xs-12 text-center menu-1 menu-wrap">
+                    <ul>
+                        <li><a href="/main">Home</a></li>
+                        <li><a href="/about">About Us</a></li>
+                        <li><a href="/results">Maps</a></li>
+                        <li class="has-dropdown">
+                            <a href="/inquire">Data Handling</a>
+                            <ul class="dropdown">
+                                <li><a href="/inquire">지역조회</a></li>
+                                <li><a href="/searchID">ID조회</a></li>
+                                <li><a href="/putData">신고접수</a></li>
+                            </ul>
+                        </li>
+                        <li class="active"><a href="/diary">Diary</a></li>
+                        <li><a href="/sketch">Sketch</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+   </nav>
+
+
+	<header id="fh5co-header" class="fh5co-cover js-fullheight" role="banner" style="background-image: url(/static/images/bamboo.jpg);" data-stellar-background-ratio="1">
+		<div class="overlay"></div>
+		<div class="container">
+			<div class="row">
+				<div class="col-md-12 text-center">
+					<div class="display-t js-fullheight">
+						<div class="display-tc js-fullheight animate-box" data-animate-effect="fadeIn">
+							<div class="diarytxt">
+								<span style="color:white; font-size:2em"> <br><br> 뭐가 문제야 Say Something~~ </span>
+								<form id="diary" action="/diary" method="POST">
+									{% if diary_text == None %}
+										<textarea name="diary_textarea"> </textarea>
+										<button type="submit" style="color:black; margin:10px;" onclick="location.href='/diary'">제출하기</button>
+									{% else %}
+										<div class="diaryresult">
+										{% if diary_text == ' ' %}
+											<h3> 아직 아무 글도 입력이 안되었습니다. </h3>
+											<h3> 내용을 입력해주세요. </h3>
+										{% else %}
+											<p>{{diary_text}}</p>
+											<p>아동학대 가능성이 <span style="color:red">{{ (diary_NLP_results * 100) | round(2) }} % </span> 입니다.</p>
+											{% if (diary_NLP_results * 100 | int | round) >= 70 %}
+												<p>{{name}}</p>
+												<img src={{ url }} alt="Chart" height="400" width="400" id="results">
+											{% endif %}
+										{% endif %}
+										</div>
+										<input type="reset" style="color:black; margin:10px;" value="다시쓰기" onclick="location.href='/diary'">
+									{% endif %}
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+
+	</header>
+
+</html>
+{% endblock %}

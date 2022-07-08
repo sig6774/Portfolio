@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+{% extends 'layout.html' %}
+
+{% block content %}
+<html lang="en">
+   <body>
+
+   <div class="fh5co-loader"></div>
+
+   <div id="page">
+   <nav class="fh5co-nav" role="navigation">
+      <!-- <div class="top-menu"> -->
+         <div class="container">
+            <div class="row">
+               <div class="col-xs-12 text-center logo-wrap">
+                  <div id="fh5co-logo"><a href="/main"><span>L</span>ook <span>A</span>fter a Child<span>.</span></a></div>
+               </div>
+               <div class="col-xs-12 text-center menu-1 menu-wrap">
+                  <ul>
+                     <li><a href="/main">Home</a></li>
+                     <li><a href="/about">About Us</a></li>
+                     <li><a href="/results">Maps</a></li>
+                     <li class="has-dropdown">
+                                <a href="/inquire">Data Handling</a>
+                                <ul class="dropdown">
+                           <li><a href="/inquire">지역조회</a></li>
+                           <li><a href="/searchID">ID조회</a></li>
+                           <li><a href="/putData">신고접수</a></li>
+                        </ul>
+                     </li>
+                     <li><a href="/diary">Diary</a></li>
+                     <li class="active"><a href="/sketch">Sketch</a></li>
+                  </ul>
+               </div>
+            </div>
+
+         </div>
+      <!-- </div> -->
+   </nav>
+
+<link rel="stylesheet" href="/static/css/style2.css">
+
+   <header id="fh5co-header" class="fh5co-cover js-fullheight" role="banner" style="background-image: url(/static/images/sketch3.png);" data-stellar-background-ratio="1">
+      <div class="overlay"></div>
+      <div class="container">
+         <div class="row">
+            <div class="col-md-12 text-center">
+               <div class="display-t js-fullheight">
+                  <div class="display-tc js-fullheight animate-box" data-animate-effect="fadeIn">
+                     <div class="sketcharea">
+                        <form id="upload" action="/sketch" method="POST" enctype="multipart/form-data">
+                              <div class="upload-btn-wrapper">
+                                 <button class="btn">이미지 업로드</button>
+                                 <input type="file" value="Upload" name="image">
+                                 <br><br>
+                                 {% if label %}
+                                    <img src={{imgpath}} style="width:800px; height:500px;"><br>
+                                 {% else %}
+                                    <img src='/static/images/gray.PNG' style="width:800px; height:500px;"><br>
+                                 {% endif %}
+                              </div>
+                       
+                              <input type="submit" value="제출하기">
+                              {% if label %}
+                                 <span class="result_lable" style="position: absolute; right:43px; bottom:60px;">{{ label }}</span>
+                              {% endif %}
+                       
+                        </form>
+
+<!--                        <form id="sketch" action="/sketch" method="POST">-->
+<!--                           <div class="upload-btn-wrapper">-->
+<!--                              {% if sketch_label == 'sketch' %}-->
+<!--                                 <button type="submit" style="color:black; margin:10px;">이미지 업로드</button>-->
+<!--                                 <input type="file" value="Upload" name="image">-->
+<!--                              {% elif sketch_label == 'sketch' %}-->
+<!--                                 <span style="color:red">{{sketch_label}} %</span></p>-->
+<!--                              {% endif %}-->
+<!--                           </div>-->
+<!--                        </form>-->
+
+
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+
+
+   </header>
+
+</html>
+{% endblock %}
