@@ -19,7 +19,7 @@
 
     // state
     var shown = false,
-        lock  = false,
+        lock = false,
         originalStyles
 
     // options
@@ -70,7 +70,7 @@
 
     // helpers ----------------------------------------------------------------
 
-    function setStyle (el, styles, remember) {
+    function setStyle(el, styles, remember) {
         checkTrans(styles)
         var s = el.style,
             original = {}
@@ -83,14 +83,14 @@
         return original
     }
 
-    function sniffTransition () {
-        var ret   = {},
+    function sniffTransition() {
+        var ret = {},
             trans = ['webkitTransition', 'transition', 'mozTransition'],
             tform = ['webkitTransform', 'transform', 'mozTransform'],
-            end   = {
-                'transition'       : 'transitionend',
-                'mozTransition'    : 'transitionend',
-                'webkitTransition' : 'webkitTransitionEnd'
+            end = {
+                'transition': 'transitionend',
+                'mozTransition': 'transitionend',
+                'webkitTransition': 'webkitTransitionEnd'
             }
         trans.some(function (prop) {
             if (overlay.style[prop] !== undefined) {
@@ -108,7 +108,7 @@
         return ret
     }
 
-    function checkTrans (styles) {
+    function checkTrans(styles) {
         var value
         if (styles.transition) {
             value = styles.transition
@@ -129,7 +129,7 @@
         'marginTop', 'font', 'lineHeight', 'verticalAlign'
     ]
 
-    function copy (el, box) {
+    function copy(el, box) {
         var styles = getComputedStyle(el),
             ph = document.createElement('div'),
             i = stylesToCopy.length, key
@@ -185,10 +185,10 @@
             lock = true
             parent = target.parentNode
 
-            var p     = target.getBoundingClientRect(),
+            var p = target.getBoundingClientRect(),
                 scale = Math.min(options.maxWidth / p.width, options.maxHeight / p.height),
-                dx    = p.left - (window.innerWidth - p.width) / 2,
-                dy    = p.top - (window.innerHeight - p.height) / 2
+                dx = p.left - (window.innerWidth - p.width) / 2,
+                dy = p.top - (window.innerHeight - p.height) / 2
 
             placeholder = copy(target, p)
 
@@ -238,7 +238,7 @@
                 transform: 'scale(' + scale + ')'
             })
 
-            target.addEventListener(transEndEvent, function onEnd () {
+            target.addEventListener(transEndEvent, function onEnd() {
                 target.removeEventListener(transEndEvent, onEnd)
                 lock = false
                 cb = cb || options.onOpen
@@ -256,7 +256,7 @@
             // onBeforeClose event
             if (options.onBeforeClose) options.onBeforeClose(target)
 
-            var p  = placeholder.getBoundingClientRect(),
+            var p = placeholder.getBoundingClientRect(),
                 dx = p.left - (window.innerWidth - p.width) / 2,
                 dy = p.top - (window.innerHeight - p.height) / 2
 
@@ -265,7 +265,7 @@
                 transform: 'translate(' + dx + 'px, ' + dy + 'px)'
             })
 
-            target.addEventListener(transEndEvent, function onEnd () {
+            target.addEventListener(transEndEvent, function onEnd() {
                 target.removeEventListener(transEndEvent, onEnd)
                 setStyle(target, originalStyles)
                 parent.insertBefore(target, placeholder)
@@ -285,7 +285,7 @@
             return this
         },
 
-        listen: function listen (el) {
+        listen: function listen(el) {
 
             if (typeof el === 'string') {
                 var els = document.querySelectorAll(el),
@@ -320,7 +320,9 @@
     if (typeof exports == "object") {
         module.exports = api
     } else if (typeof define == "function" && define.amd) {
-        define(function(){ return api })
+        define(function () {
+            return api
+        })
     } else {
         this.Zoomerang = api
     }

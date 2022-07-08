@@ -1,52 +1,45 @@
-from flask import Blueprint, request, render_template, flash, redirect, url_for, Response, Flask
-from flask import current_app as app
-import flask
-import sklearn.externals 
-import joblib
-import numpy as np
-import imageio
-from scipy import misc
+from flask import request, render_template, redirect, Flask
 
-import application.ml.model as MM #정형데이터처리 연동
-import application.ml.NLP as nlp #자연어처리 연동
-import application.ml.Database as db #데이터베이스 연동
+import application.ml.model as MM  # 정형데이터처리 연동
+import application.ml.NLP as nlp  # 자연어처리 연동
+import application.ml.Database as db  # 데이터베이스 연동
 
 from werkzeug.utils import secure_filename
 
-from flask_restful import Resource, Api
-import pandas as pd
-import folium
-import webbrowser
-import time
 import random
 
-
 app = Flask(__name__)
+
+
 # app = Blueprint('main', __name__, url_prefix='/')
 
 # 메인페이지 라우팅
 @app.route("/")
 @app.route('/main')
 def index():
-      return render_template('/main/index.html')
+    return render_template('/main/index.html')
+
 
 # 소개페이지 라우팅
 @app.route('/about')
 def about():
     return render_template('/About Us/about.html')
 
+
 # Folium 시각화페이지 라우팅
 @app.route('/results')
 def results():
     return render_template('/Maps/map.html')
+
 
 # 새로운 데이터 입력 페이지 라우팅
 @app.route('/putData')
 def putData():
     return render_template('/Test/putData.html')
 
-# 데이터 예측 처리  
-@app.route('/predict',methods=['POST'])
+
+# 데이터 예측 처리
+@app.route('/predict', methods=['POST'])
 def make_prediction():
     if request.method == 'POST':
         input_data = []
@@ -61,19 +54,19 @@ def make_prediction():
             birthday = None
         else:
             birthday = int(temp_birthday)
-            if (2019 - (birthday/10000)) >= 0.0 and (2019 - (birthday/10000)) < 1.0:
+            if (2019 - (birthday / 10000)) >= 0.0 and (2019 - (birthday / 10000)) < 1.0:
                 input_data.append('아동_생년월일_0~1세미만')
-            elif (2019 - (birthday/10000)) >= 1.0 and (2019 - (birthday/10000)) <= 3.0:
+            elif (2019 - (birthday / 10000)) >= 1.0 and (2019 - (birthday / 10000)) <= 3.0:
                 input_data.append('아동_생년월일_1~3세')
-            elif (2019 - (birthday/10000)) >= 4.0 and (2019 - (birthday/10000)) <= 6.0:
+            elif (2019 - (birthday / 10000)) >= 4.0 and (2019 - (birthday / 10000)) <= 6.0:
                 input_data.append('아동_생년월일_4~6세')
-            elif (2019 - (birthday/10000)) >= 7.0 and (2019 - (birthday/10000)) <= 9.0:
+            elif (2019 - (birthday / 10000)) >= 7.0 and (2019 - (birthday / 10000)) <= 9.0:
                 input_data.append('아동_생년월일_7~9세')
-            elif (2019 - (birthday/10000)) >= 10.0 and (2019 - (birthday/10000)) <= 12.0:
+            elif (2019 - (birthday / 10000)) >= 10.0 and (2019 - (birthday / 10000)) <= 12.0:
                 input_data.append('아동_생년월일_10~12세')
-            elif (2019 - (birthday/10000)) >= 13.0 and (2019 - (birthday/10000)) <= 15.0:
+            elif (2019 - (birthday / 10000)) >= 13.0 and (2019 - (birthday / 10000)) <= 15.0:
                 input_data.append('아동_생년월일_13~15세')
-            elif (2019 - (birthday/10000)) >= 16.0 and (2019 - (birthday/10000)) <= 17.0:
+            elif (2019 - (birthday / 10000)) >= 16.0 and (2019 - (birthday / 10000)) <= 17.0:
                 input_data.append('아동_생년월일_16~17세')
             else:
                 input_data.append('아동_생년월일_18~20세')
@@ -127,17 +120,19 @@ def make_prediction():
         Report_text = request.form['text']
         text_NLP_results = nlp.sentiment_predict_EM(Report_text)
 
-        #학대 유형 시각화, flag 1은 신고접수 2는 다이어리
+        # 학대 유형 시각화, flag 1은 신고접수 2는 다이어리
         flag = 1
         nlp.sentiment_predict_EM_VZ(Report_text, flag)
 
-        #시각화 자료 불러오기 -> 이미지 캐싱문제 해결위해 랜덤번호 붙여줌
+        # 시각화 자료 불러오기 -> 이미지 캐싱문제 해결위해 랜덤번호 붙여줌
         source_url = 'static/images/NLP_VZ_Report_results.png'
         random_num = int(random.random() * 1000000)
         url = source_url + '?ver=' + str(random_num)
 
         # # 결과 리턴
-        return render_template('/Test/putData.html', model_results=model_results, text_NLP_results = text_NLP_results, input_data=input_data, Report_text=Report_text, name = '학대 유형', url = url)
+        return render_template('/Test/putData.html', model_results=model_results, text_NLP_results=text_NLP_results,
+                               input_data=input_data, Report_text=Report_text, name='학대 유형', url=url)
+
 
 # ID기반 조회
 @app.route('/searchID', methods=['GET', 'POST'])
@@ -149,13 +144,14 @@ def searchID():
         IDnumber = request.form['ID']
         db_ID_data = db.read_IDdata(IDnumber)
         db_data_dummy = MM.make_db_data_dummy(db_ID_data)
-        reabuse_predict=[]
+        reabuse_predict = []
         for i in range(len(db_data_dummy)):
-            reabuse_predict.append(MM.model_avg(db_data_dummy.iloc[i,:]))
+            reabuse_predict.append(MM.model_avg(db_data_dummy.iloc[i, :]))
         predict_results = db_ID_data[['피해아동대상자', '아동_성별', '아동_생년월일', '신고_접수일시', '신대_통계거점', 'NEW_CALL_COUNT']]
         predict_results['재학대 발생확률'] = reabuse_predict
         len_ID_data = len(predict_results.index)
-    return render_template('/Test/ID.html', db_ID_data=predict_results, len_ID_data = len_ID_data)
+    return render_template('/Test/ID.html', db_ID_data=predict_results, len_ID_data=len_ID_data)
+
 
 # 재학대 예측
 @app.route('/inquire', methods=['GET', 'POST'])
@@ -163,58 +159,60 @@ def inquire():
     db_data = []
     predict_results = []
     df_length = 0
-    #조회버튼 클릭시
+    # 조회버튼 클릭시
     if request.method == 'POST':
-        #현재 위치(IP기반), 시간 기반으로 데이터베이스 조회  
+        # 현재 위치(IP기반), 시간 기반으로 데이터베이스 조회
         db_data = db.read_database()
         db_data_dummy = MM.make_db_data_dummy(db_data)
-        reabuse_predict=[]
+        reabuse_predict = []
         for i in range(len(db_data_dummy)):
-            reabuse_predict.append(MM.model_avg(db_data_dummy.iloc[i,:]))
+            reabuse_predict.append(MM.model_avg(db_data_dummy.iloc[i, :]))
         predict_results = db_data[['피해아동대상자', '아동_성별', '아동_생년월일', '신고_접수일시', '신대_통계거점', 'NEW_CALL_COUNT']]
         predict_results['재학대 발생확률'] = reabuse_predict
         df_length = len(predict_results.index)
 
-        #읽은 데이터 모델 돌려야함
-        #모델 언제나와융
-    return render_template('/Test/inquire.html', inquire_results = predict_results, df_length = df_length)
+        # 읽은 데이터 모델 돌려야함
+        # 모델 언제나와융
+    return render_template('/Test/inquire.html', inquire_results=predict_results, df_length=df_length)
 
 
 # 다이어리 통한 분석
-@app.route('/diary', methods=['GET','POST'])
+@app.route('/diary', methods=['GET', 'POST'])
 def diary():
-    #다이어리 내용 입력시
+    # 다이어리 내용 입력시
     if request.method == 'POST':
         diary_text = request.form['diary_textarea']
-        #아동학대 확률 예측
+        # 아동학대 확률 예측
         diary_NLP_results = nlp.sentiment_predict_EM(diary_text)
-        
-        #학대 유형 시각화, flag 1은 신고접수 2는 다이어리
+
+        # 학대 유형 시각화, flag 1은 신고접수 2는 다이어리
         flag = 2
         # nlp.sentiment_predict_VZ(diary_text, flag)
         nlp.sentiment_predict_EM_VZ(diary_text, flag)
 
-        #시각화 자료 불러오기 -> 이미지 캐싱문제 해결위해 랜덤번호 붙여줌
+        # 시각화 자료 불러오기 -> 이미지 캐싱문제 해결위해 랜덤번호 붙여줌
         source_url = 'static/images/NLP_VZ_Diary_results.png'
         random_num = int(random.random() * 1000000)
         url = source_url + '?ver=' + str(random_num)
-        return render_template('/Diary/diary.html', diary_text = diary_text, diary_NLP_results=diary_NLP_results, name = '학대 유형', url = url)
+        return render_template('/Diary/diary.html', diary_text=diary_text, diary_NLP_results=diary_NLP_results,
+                               name='학대 유형', url=url)
 
     else:
         diary_text = None
         diary_NLP_results = 0.0
 
-    return render_template('/Diary/diary.html', diary_text = diary_text, diary_NLP_results=diary_NLP_results)
+    return render_template('/Diary/diary.html', diary_text=diary_text, diary_NLP_results=diary_NLP_results)
+
 
 # 그림???
-@app.route('/sketch', methods=['GET','POST'])
+@app.route('/sketch', methods=['GET', 'POST'])
 def sketch():
     if request.method == 'POST':
         # 업로드 파일 처리 분기
         file = request.files['image']
         sfname = 'static/images/' + str(secure_filename(file.filename))
         if not file:
-            sketch_text ='No Files'
+            sketch_text = 'No Files'
             return render_template('/Sketch/sketch.html', label=sketch_text)
         else:
             sketch_text = '제출완료'
@@ -226,4 +224,4 @@ def sketch():
 if __name__ == "__main__":
     app.debug = True
 
-    app.run(host = "0.0.0.0", port = 5050)
+    app.run(host="0.0.0.0", port=5050)

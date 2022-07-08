@@ -1,175 +1,183 @@
 {% extends 'layout.html' %}
 
 {% block content %}
-   <body>
-      
-   <div class="fh5co-loader"></div>
-   
-   <div id="page">
-   <nav class="fh5co-nav" role="navigation">
-        <div class="container">
-            <div class="row">
-                <div class="col-xs-12 text-center logo-wrap">
-                    <div id="fh5co-logo"><a href="/main"><span>L</span>ook <span>A</span>fter a Child<span>.</span></a></div>
+    <body>
+
+    <div class="fh5co-loader"></div>
+
+    <div id="page">
+        <nav class="fh5co-nav" role="navigation">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xs-12 text-center logo-wrap">
+                        <div id="fh5co-logo"><a href="/main"><span>L</span>ook <span>A</span>fter a Child<span>.</span></a>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 text-center menu-1 menu-wrap">
+                        <ul>
+                            <li class="active"><a href="/main">Home</a></li>
+                            <li><a href="/about">About Us</a></li>
+                            <li><a href="/results">Maps</a></li>
+                            <li class="has-dropdown">
+                                <a href="/inquire">Data Handling</a>
+                                <ul class="dropdown">
+                                    <li><a href="/inquire">지역조회</a></li>
+                                    <li><a href="/searchID">ID조회</a></li>
+                                    <li><a href="/putData">신고접수</a></li>
+                                </ul>
+                            </li>
+                            <li><a href="/diary">Diary</a></li>
+                            <li><a href="/sketch">Sketch</a></li>
+                        </ul>
+                    </div>
                 </div>
-                <div class="col-xs-12 text-center menu-1 menu-wrap">
-                    <ul>
-                        <li class="active"><a href="/main">Home</a></li>
-                        <li><a href="/about">About Us</a></li>
-                        <li><a href="/results">Maps</a></li>
-                        <li class="has-dropdown">
-                            <a href="/inquire">Data Handling</a>
-                            <ul class="dropdown">
-                                <li><a href="/inquire">지역조회</a></li>
-                                <li><a href="/searchID">ID조회</a></li>
-                                <li><a href="/putData">신고접수</a></li>
-                            </ul>
-                        </li>
-                        <li><a href="/diary">Diary</a></li>
-                        <li><a href="/sketch">Sketch</a></li>
-                    </ul>
+            </div>
+        </nav>
+
+        <header id="fh5co-header" class="fh5co-cover js-fullheight" role="banner"
+                style="background-image: url(/static/images/img4.jpg);" data-stellar-background-ratio="0.5">
+            <div class="overlay"></div>
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12 text-center">
+                        <div class="display-t js-fullheight">
+                            <div class="display-tc js-fullheight animate-box" data-animate-effect="fadeIn">
+                                <h1>아동학대 선제 대응 서비스</h1>
+                                <h2>by team LA</h2>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <div id="fh5co-about" class="fh5co-section">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-6 col-md-pull-4 img-wrap animate-box" data-animate-effect="fadeInLeft">
+                        <img src="/static/images/img1.jpg"
+                             style="float:left; margin:0 0 0 200px; width:768px; height:431.6px;">
+                    </div>
+                    <div class="col-md-5 col-md-push-1 animate-box">
+                        <div class="section-heading">
+                            <h2>해결하고자 하는 문제점</h2>
+                            <p>아동학대가 사회적 이슈로 떠오르며 국가적 차원에서도 많은 정책을 진행하고 있지만 제한적인 인원으로 학대 아동에 대한 사후관리의 어려움이 생기면서 모든 학대아동을
+                                꾸준히 관리할 수 없다는 문제가 있습니다.</p>
+                            <p>저희는 이 프로젝트를 통해 기존의 데이터를 가지고 아동학대 사례를 분석함으로써 위기 상황에 놓인 아이들을 적극, 신속하게 발견하고 보호하며 재학대를 예측하여
+                                방지하고자 합니다.</p>
+                            <p>단기적으로는 2018년의 2,543건의 재학대 사례를 2022년까지 1,000건 이하로 줄이는 것을, 장기적으로는 최대한 많은 위기 아동을 학대로 부터 벗어나는
+                                것을 목표로 두고 있습니다.</p>
+                            <!-- <p><a href="#" class="btn btn-primary btn-outline">Our History</a></p> -->
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-   </nav>
 
-   <header id="fh5co-header" class="fh5co-cover js-fullheight" role="banner" style="background-image: url(/static/images/img4.jpg);" data-stellar-background-ratio="0.5">
-      <div class="overlay"></div>
-      <div class="container">
-         <div class="row">
-            <div class="col-md-12 text-center">
-               <div class="display-t js-fullheight">
-                  <div class="display-tc js-fullheight animate-box" data-animate-effect="fadeIn">
-                     <h1>아동학대 선제 대응 서비스</h1>
-                     <h2>by team LA</h2>
-                  </div>
-               </div>
+        <div id="fh5co-featured-testimony" class="fh5co-section">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12 fh5co-heading animate-box">
+                        <h2>아동학대란</h2>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <p>보호자를 포함한 성인이 아동의 건강 또는 복지를 해치거나 정상적 발달을 저해할 신체적, 정신적, 성적 폭력이나 가혹행위를 하는 것과 아동의 보호자가
+                                    아동을 유기하거나 방임하는 것을 말한다.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-5 animate-box img-to-responsive animate-box" data-animate-effect="fadeInLeft">
+                        <img src="/static/images/president.jpg" alt="">
+                    </div>
+                    <div class="col-md-7 animate-box" data-animate-effect="fadeInRight">
+                        <blockquote>
+                            <p align="justify"> &ldquo; 그토록 심각한 상황이 벌어졌는데도 아이가 위기인줄 몰랐다. 아동학대가 일어날 가능성이 커진 만큼 더욱 적극적으로
+                                위기의 아동을 찾아내야 한다. 학대 위기 아동 사전 파악 제도의 작동 여부를 점검하여 적극적으로 찾아내라. 위기아동, 엄마 같은 맘으로 살펴라. 행정사무
+                                다루듯 하지 말고 자기 일처럼 챙겨라. &rdquo;</p>
+                            <p class="author" align="right"><cite>&mdash; 대통령 문재인</cite></p>
+                        </blockquote>
+                    </div>
+                </div>
             </div>
-         </div>
-      </div>
-   </header>
-
-   <div id="fh5co-about" class="fh5co-section">
-      <div class="container">
-         <div class="row">
-            <div class="col-md-6 col-md-pull-4 img-wrap animate-box" data-animate-effect="fadeInLeft">
-               <img src="/static/images/img1.jpg" style="float:left; margin:0 0 0 200px; width:768px; height:431.6px;">
+        </div>
+        <div id="fh5co-blog" class="fh5co-section">
+            <div class="container">
+                <div class="row animate-box">
+                    <div class="col-md-8 col-md-offset-2 text-center fh5co-heading animate-box">
+                        <h2>Organization</h2>
+                        <img src="/static/images/big.png">
+                        <img src="/static/images/ty.png" style="height:64px; width:auto;">
+                        <img src="/static/images/ssis.png" style="height:64px; width:auto;">
+                        <img src="/static/images/h.png" style="height:64px; width:auto;">
+                        <br><img src="/static/images/kdata.png" style="height:64px; width:auto; margin-top:5px;">
+                        <img src="/static/images/kn.png" style="height:64px; width:auto; margin-top:5px;">
+                    </div>
+                </div>
             </div>
-            <div class="col-md-5 col-md-push-1 animate-box">
-               <div class="section-heading">
-                  <h2>해결하고자 하는 문제점</h2>
-                  <p>아동학대가 사회적 이슈로 떠오르며 국가적 차원에서도 많은 정책을 진행하고 있지만 제한적인 인원으로 학대 아동에 대한 사후관리의 어려움이 생기면서 모든 학대아동을 꾸준히 관리할 수 없다는 문제가 있습니다.</p>
-                  <p>저희는 이 프로젝트를 통해 기존의 데이터를 가지고 아동학대 사례를 분석함으로써 위기 상황에 놓인 아이들을 적극, 신속하게 발견하고 보호하며 재학대를 예측하여 방지하고자 합니다.</p>
-                  <p>단기적으로는 2018년의 2,543건의 재학대 사례를 2022년까지 1,000건 이하로 줄이는 것을, 장기적으로는 최대한 많은 위기 아동을 학대로 부터 벗어나는 것을 목표로 두고 있습니다.</p>
-                  <!-- <p><a href="#" class="btn btn-primary btn-outline">Our History</a></p> -->
-               </div>
+        </div>
+
+        <footer id="fh5co-footer" role="contentinfo" class="fh5co-section">
+            <div class="container">
+                <div class="row row-pb-md">
+                    <div class="col-md-4 fh5co-widget">
+                        <h4>Project Mission</h4>
+                        <p>1차적으로 피해아동들을 발생 가능한 재학대로부터 보호하며, 2차적으로는 사후관리와 인력의 효율성을 증가시킨다.</p>
+                    </div>
+                    <div class="col-md-2 col-md-push-1 fh5co-widget">
+                        <h4>contents</h4>
+                        <li><a href="/main">Home</a></li>
+                        <li><a href="/about">About Us</a></li>
+                        <li><a href="/inquire">Data Handling</a></li>
+                        <li><a href="/test">Test</a></li>
+                        <li><a href="/diary">Diary</a></li>
+                        <li><a href="/sketch">Sketch</a></li>
+                    </div>
+                    <div class="col-md-2 col-md-push-1 fh5co-widget">
+                        <h4>아동학대 지도</h4>
+                        <ul class="fh5co-footer-links">
+                            <li><a href="/results">시/도</a></li>
+                        </ul>
+                    </div>
+
+                    <div class="col-md-4 col-md-push-1 fh5co-widget">
+                        <h4>Contact Information</h4>
+                        <ul class="fh5co-footer-links">
+                            <li>Team, Look After</li>
+                            <li>통영리스타트플랫폼</li>
+                            <li>+10 2836 5786</li>
+                            <li>yrk3224@naver.com</li>
+                        </ul>
+                    </div>
+
+                </div>
+
+                <div class="row copyright">
+                    <div class="col-md-12 text-center">
+                        <p>
+                            <small class="block">&copy; 2020 Look After a Child.</small>
+                            <small class="block">thanks :)</small>
+                        </p>
+                        <p>
+                        <ul class="fh5co-social-icons">
+                            <li><a href="#"><i class="icon-twitter2"></i></a></li>
+                            <li><a href="#"><i class="icon-facebook2"></i></a></li>
+                            <li><a href="#"><i class="icon-linkedin2"></i></a></li>
+                            <li><a href="#"><i class="icon-dribbble2"></i></a></li>
+                        </ul>
+                        </p>
+                    </div>
+                </div>
+
             </div>
-         </div>
-      </div>
-   </div>
+        </footer>
+    </div>
 
-   <div id="fh5co-featured-testimony" class="fh5co-section">
-      <div class="container">
-         <div class="row">
-            <div class="col-md-12 fh5co-heading animate-box">
-               <h2>아동학대란</h2>
-               <div class="row">
-                  <div class="col-md-6">
-                     <p>보호자를 포함한 성인이 아동의 건강 또는 복지를 해치거나 정상적 발달을 저해할 신체적, 정신적, 성적 폭력이나 가혹행위를 하는 것과 아동의 보호자가 아동을 유기하거나 방임하는 것을 말한다.</p>
-                  </div>
-               </div>
-            </div>
-
-            <div class="col-md-5 animate-box img-to-responsive animate-box" data-animate-effect="fadeInLeft">
-                  <img src="/static/images/president.jpg" alt="">
-            </div>
-            <div class="col-md-7 animate-box" data-animate-effect="fadeInRight">
-               <blockquote>
-                  <p align="justify"> &ldquo; 그토록 심각한 상황이 벌어졌는데도 아이가 위기인줄 몰랐다. 아동학대가 일어날 가능성이 커진 만큼 더욱 적극적으로 위기의 아동을 찾아내야 한다. 학대 위기 아동 사전 파악 제도의 작동 여부를 점검하여 적극적으로 찾아내라. 위기아동, 엄마 같은 맘으로 살펴라. 행정사무 다루듯 하지 말고 자기 일처럼 챙겨라. &rdquo;</p>
-                  <p class="author" align="right"><cite>&mdash; 대통령 문재인</cite></p>
-               </blockquote>
-            </div>
-         </div>
-      </div>
-   </div>
-   <div id="fh5co-blog" class="fh5co-section">
-      <div class="container">
-         <div class="row animate-box">
-            <div class="col-md-8 col-md-offset-2 text-center fh5co-heading animate-box">
-               <h2>Organization</h2>
-               <img src="/static/images/big.png">
-               <img src="/static/images/ty.png" style="height:64px; width:auto;">
-               <img src="/static/images/ssis.png" style="height:64px; width:auto;">
-               <img src="/static/images/h.png" style="height:64px; width:auto;">
-               <br><img src="/static/images/kdata.png" style="height:64px; width:auto; margin-top:5px;">
-               <img src="/static/images/kn.png" style="height:64px; width:auto; margin-top:5px;">
-            </div>
-         </div>
-      </div>
-   </div>
-
-   <footer id="fh5co-footer" role="contentinfo" class="fh5co-section">
-      <div class="container">
-         <div class="row row-pb-md">
-            <div class="col-md-4 fh5co-widget">
-               <h4>Project Mission</h4>
-               <p>1차적으로 피해아동들을 발생 가능한 재학대로부터 보호하며, 2차적으로는 사후관리와 인력의 효율성을 증가시킨다.</p>
-            </div>
-            <div class="col-md-2 col-md-push-1 fh5co-widget">
-               <h4>contents</h4>
-               <li><a href="/main">Home</a></li>
-               <li><a href="/about">About Us</a></li>
-               <li><a href="/inquire">Data Handling</a></li>
-               <li><a href="/test">Test</a></li>
-               <li><a href="/diary">Diary</a></li>
-               <li><a href="/sketch">Sketch</a></li>
-            </div>
-            <div class="col-md-2 col-md-push-1 fh5co-widget">
-               <h4>아동학대 지도</h4>
-               <ul class="fh5co-footer-links">
-                  <li><a href="/results">시/도</a></li>
-               </ul>
-            </div>
-
-            <div class="col-md-4 col-md-push-1 fh5co-widget">
-               <h4>Contact Information</h4>
-               <ul class="fh5co-footer-links">
-                  <li>Team, Look After</li>
-                  <li>통영리스타트플랫폼</li>
-                  <li>+10 2836 5786</li>
-                  <li>yrk3224@naver.com</li>
-               </ul>
-            </div>
-
-         </div>
-
-         <div class="row copyright">
-            <div class="col-md-12 text-center">
-               <p>
-                  <small class="block">&copy; 2020 Look After a Child.</small>
-                  <small class="block">thanks :)</small>
-               </p>
-               <p>
-                  <ul class="fh5co-social-icons">
-                     <li><a href="#"><i class="icon-twitter2"></i></a></li>
-                     <li><a href="#"><i class="icon-facebook2"></i></a></li>
-                     <li><a href="#"><i class="icon-linkedin2"></i></a></li>
-                     <li><a href="#"><i class="icon-dribbble2"></i></a></li>
-                  </ul>
-               </p>
-            </div>
-         </div>
-
-      </div>
-   </footer>
-   </div>
-
-   <div class="gototop js-top">
-      <a href="#" class="js-gotop"><i class="icon-arrow-up22"></i></a>
-   </div>
+    <div class="gototop js-top">
+        <a href="#" class="js-gotop"><i class="icon-arrow-up22"></i></a>
+    </div>
 
 
-
-   </body>
-</html>
+    </body>
+    </html>
 {% endblock %}

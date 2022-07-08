@@ -2,391 +2,405 @@
 
 {% block content %}
 
-<head>
-    <meta charset="UTF-8">
-    <title>Test</title>
-</head>
-<body>
-<div class="fh5co-loader"></div>
+    <head>
+        <meta charset="UTF-8">
+        <title>Test</title>
+    </head>
+    <body>
+    <div class="fh5co-loader"></div>
 
-   <div id="page">
-   <nav class="fh5co-nav" role="navigation">
-        <div class="container">
-            <div class="row">
-                <div class="col-xs-12 text-center logo-wrap">
-                    <div id="fh5co-logo"><a href="/main"><span>L</span>ook <span>A</span>fter a Child<span>.</span></a></div>
+    <div id="page">
+        <nav class="fh5co-nav" role="navigation">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xs-12 text-center logo-wrap">
+                        <div id="fh5co-logo"><a href="/main"><span>L</span>ook <span>A</span>fter a Child<span>.</span></a>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 text-center menu-1 menu-wrap">
+                        <ul>
+                            <li><a href="/main">Home</a></li>
+                            <li><a href="/about">About Us</a></li>
+                            <li><a href="/results">Maps</a></li>
+                            <li class="has-dropdown active">
+                                <a href="/inquire">Data Handling</a>
+                                <ul class="dropdown">
+                                    <li><a href="/inquire">지역조회</a></li>
+                                    <li><a href="/searchID">ID조회</a></li>
+                                    <li><a href="/putData">신고접수</a></li>
+                                </ul>
+                            </li>
+                            <li><a href="/diary">Diary</a></li>
+                            <li><a href="/sketch">Sketch</a></li>
+                        </ul>
+                    </div>
                 </div>
-                <div class="col-xs-12 text-center menu-1 menu-wrap">
-                    <ul>
-                        <li><a href="/main">Home</a></li>
-                        <li><a href="/about">About Us</a></li>
-                        <li><a href="/results">Maps</a></li>
-                        <li class="has-dropdown active">
-                            <a href="/inquire">Data Handling</a>
-                            <ul class="dropdown">
-                                <li><a href="/inquire">지역조회</a></li>
-                                <li><a href="/searchID">ID조회</a></li>
-                                <li><a href="/putData">신고접수</a></li>
-                            </ul>
-                        </li>
-                        <li><a href="/diary">Diary</a></li>
-                        <li><a href="/sketch">Sketch</a></li>
-                    </ul>
+            </div>
+        </nav>
+
+
+        <div id="fh5co-about" class="fh5co-section" style="background-image: url(/static/images/code2.png);">
+            <!--div class="overlay"></div-->
+            <div class="container">
+                <div class="checks">
+                    {% if model_results %}
+                        <div class="left-box" style="color:black">
+                            <p style="color:black">입력 데이터</p>
+                            {% for i in input_data %}
+                                {{ i }}
+                                <br>
+                            {% endfor %}
+                            {{ Report_text }}
+                        </div>
+                        <div class="right-box" style="color:black">
+                        <span class="result_lable">
+                            {% if (( model_results * 0.7  + text_NLP_results * 100 *0.3) | int | round)>=80 %}
+                                분석결과 : {{ (model_results * 0.7 + text_NLP_results * 100 *0.3 | round(2)) }} %. 지금 즉시 해당
+                                아동에게 도움이 필요합니다. 바로 조사에 나서주세요
+                            {% elif (( model_results * 0.7  + text_NLP_results * 100 *0.3) | int | round)<80 and (( model_results * 0.7  + text_NLP_results * 100 *0.3) | int | round)>=60 %}
+                                분석결과 : {{ (model_results * 0.7 + text_NLP_results * 100 *0.3 | round(2)) }} %. 6시간 이내로
+                                조사해 주세요
+                            {% elif (( model_results * 0.7  + text_NLP_results * 100 *0.3) | int | round)<60 and (( model_results * 0.7  + text_NLP_results * 100 *0.3) | int | round)>=40 %}
+                                분석결과 : {{ (model_results * 0.7 + text_NLP_results * 100 *0.3 | round(2)) }} %. 12시간 이내로
+                                조사해 주세요
+                            {% elif (( model_results * 0.7  + text_NLP_results * 100 *0.3) | int | round)<40 and (( model_results * 0.7  + text_NLP_results * 100 *0.3) | int | round)>=20 %}
+                                분석결과 : {{ (model_results * 0.7 + text_NLP_results * 100 * 0.3 | round(2)) }} %. 24시간 이내로
+                                조사해 주세요
+                            {% else %}
+                                분석결과 : {{ (model_results * 0.7 + text_NLP_results * 100 *0.3 | round(2)) }} %. 72시간 이내로
+                                조사해 주세요
+                            {% endif %}
+                        </span>
+                            <br><input type="reset" style="color:black;" value="재입력" onclick="location.href='/putData'">
+                        </div>
+                    {% else %}
+                        <form action="/predict" method="POST">
+                            <div class="left-box" style="line-height:160%;">
+                                <span style="color:blue"><br>성별 </span>
+                                <!--<!label>과 함께쓰면 텍스트를 눌러도 라디오박스가 체크된다.-->
+                                <label><input type="radio" name="sex" value="아동정보_성별_M"/>남</label>
+                                <label><input type="radio" name="sex" value="아동정보_성별_F"/>여</label>
+                                <label><input type="radio" name="sex" value="None" checked="checked"/>정보없음</label>
+
+                                <span style="color:blue"><br>생년월일 </span>
+                                <input name="birthday" value="" type="text" id="birthday" placeholder="ex)19901231"/>
+
+                                <span style="color:blue"><br>내국인여부 </span>
+                                <label><input type="radio" name="domestic" value="아동_내국인여부_내국인"/>내국인</label>
+                                <label><input type="radio" name="domestic" value="아동_내국인여부_무국적"/>무국적</label>
+                                <label><input type="radio" name="domestic" value="아동_내국인여부_외국인"/>외국인</label>
+                                <label><input type="radio" name="domestic" value="None" checked="checked"/>정보없음</label>
+
+                                <span style="color:blue"><br>최종학력 </span>
+                                <select name="edu">
+                                    <option value="None" selected> ========== 선택 ==========</option>
+                                    <option value="아동_최종학력_고등졸업">고등졸업</option>
+                                    <option value="아동_최종학력_고등중퇴">고등중퇴</option>
+                                    <option value="아동_최종학력_대학원이상">대학원이상</option>
+                                    <option value="아동_최종학력_대학졸업">대학졸업</option>
+                                    <option value="아동_최종학력_대학중퇴">대학중퇴</option>
+                                    <option value="아동_최종학력_무학">무학</option>
+                                    <option value="아동_최종학력_재학중">재학중</option>
+                                    <option value="아동_최종학력_중등졸업">중등졸업</option>
+                                    <option value="아동_최종학력_중등중퇴">중등중퇴</option>
+                                    <option value="아동_최종학력_초등졸업">초등졸업</option>
+                                    <option value="아동_최종학력_초등중퇴">초등중퇴</option>
+                                </select>
+
+                                <span style="color:blue"><br>직업유형 </span>
+                                <select name="job">
+                                    <option value="None" selected> ========== 선택 ==========</option>
+                                    <option value="아동_직업유형_고등학교">고등학교</option>
+                                    <option value="아동_직업유형_관리자">관리자</option>
+                                    <option value="아동_직업유형_군인">군인</option>
+                                    <option value="아동_직업유형_기능원 및 관련 기능 종사자">기능원 및 관련 기능 종사자</option>
+                                    <option value="아동_직업유형_기술공 및 준전문가">기술공 및 준전문가</option>
+                                    <option value="아동_직업유형_농림어업숙련종사자">농림어업숙련종사자</option>
+                                    <option value="아동_직업유형_단순노무종사자">단순노무종사자</option>
+                                    <option value="아동_직업유형_사무종사자">사무종사자</option>
+                                    <option value="아동_직업유형_서비스 및 판매종사자">서비스 및 판매종사자</option>
+                                    <option value="아동_직업유형_어린이집">어린이집</option>
+                                    <option value="아동_직업유형_유치원">유치원</option>
+                                    <option value="아동_직업유형_장치·기계조작 및 조립 종사자">장치·기계조작 및 조립 종사자</option>
+                                    <option value="아동_직업유형_전문가">전문가</option>
+                                    <option value="아동_직업유형_중학교">중학교</option>
+                                    <option value="아동_직업유형_초등학교">초등학교</option>
+                                    <option value="아동_직업유형_무직">무직</option>
+                                    <option value="아동_직업유형_기타">기타</option>
+                                </select>
+
+                                <span style="color:blue"><br>거주상태 </span>
+                                <select name="residence">
+                                    <option value="None" selected> ========== 선택 ==========</option>
+                                    <option value="아동_거주상태_전세">전세</option>
+                                    <option value="아동_거주상태_월세">월세</option>
+                                    <option value="아동_거주상태_보증금(전세)+월세">보증금(전세)+월세</option>
+                                    <option value="아동_거주상태_자택">자택</option>
+                                    <option value="아동_거주상태_영구임대아파트  또는 영구임대주택">영구임대아파트 또는 영구임대주택</option>
+                                    <option value="아동_거주상태_보호시설">보호시설</option>
+                                    <option value="아동_거주상태_무상">무상</option>
+                                    <option value="아동_거주상태_기타">기타</option>
+                                </select>
+
+                                <span style="color:blue"><br>친권자유형 </span>
+                                <select name="parents">
+                                    <option value="None" selected> ========== 선택 ==========</option>
+                                    <option value="아동_친권자유형_양모">양모</option>
+                                    <option value="아동_친권자유형_양부">양부</option>
+                                    <option value="아동_친권자유형_양부모">양부모</option>
+                                    <option value="아동_친권자유형_친권자 없음">친권자 없음</option>
+                                    <option value="아동_친권자유형_친모">친모</option>
+                                    <option value="아동_친권자유형_친부">친부</option>
+                                    <option value="아동_친권자유형_친부모">친부모</option>
+                                    <option value="아동_친권자유형_후견인 없음">후견인 없음</option>
+                                </select>
+
+                                <span style="color:blue"><br>가족유형 </span>
+                                <select name="family">
+                                    <option value="None" selected>==== 선택 ====</option>
+                                    <option value="아동_가족 유형_친부모가정">친부모가정</option>
+                                    <option value="아동_가족 유형_재혼가정">재혼가정</option>
+                                    <option value="아동_가족 유형_부자가족(별거)">부자가족(별거)</option>
+                                    <option value="아동_가족 유형_동거(사실혼포함)">동거(사실혼포함)</option>
+                                    <option value="아동_가족 유형_모자가족(이혼)">모자가족(이혼)</option>
+                                    <option value="아동_가족 유형_부자가족(이혼)">부자가족(이혼)</option>
+                                    <option value="아동_가족 유형_부자가족(가출)">부자가족(가출)</option>
+                                    <option value="아동_가족 유형_시설보호">시설보호</option>
+                                    <option value="아동_가족 유형_모자가족(별거)">모자가족(별거)</option>
+                                    <option value="아동_가족 유형_모자가족(사별)">모자가족(사별)</option>
+                                    <option value="아동_가족 유형_부자가족(사별)">부자가족(사별)</option>
+                                    <option value="아동_가족 유형_친인척보호">친인척보호</option>
+                                    <option value="아동_가족 유형_미혼부·모가정">미혼부·모가정</option>
+                                    <option value="아동_가족 유형_입양가정">입양가정</option>
+                                    <option value="아동_가족 유형_위탁가정">위탁가정</option>
+                                    <option value="아동_가족 유형_모자가족(가출)">모자가족(가출)</option>
+                                    <option value="아동_가족 유형_소년소녀가정">소년소녀가정</option>
+                                    <option value="아동_가족 유형_기타">기타</option>
+                                </select>
+
+                                <span style="color:blue"><br>다문화가족 </span>
+                                <label><input type="radio" name="multi_culture" value="아동_다문화가족_다문화"/>다문화</label>
+                                <label><input type="radio" name="multi_culture" value="아동_다문화가족_북한이탈주민"/>북한이탈주민</label>
+                                <label><input type="radio" name="multi_culture" value="아동_다문화가족_일반"/>일반</label>
+                                <label><input type="radio" name="multi_culture" value="None"
+                                              checked="checked"/>정보없음</label>
+
+                                <span style="color:blue"><br>가구소득구분코드 </span>
+                                <select name="income">
+                                    <option value="None" selected> ======== 선택 ========</option>
+                                    <option value="아동_가구소득구분코_50만원미만">50만원 미만</option>
+                                    <option value="아동_가구소득구분코_50만원이상~100만원미만">50만원 이상~100만원 미만</option>
+                                    <option value="아동_가구소득구분코_100만원이상-150만원미만">100만원 이상~150만원 미만</option>
+                                    <option value="아동_가구소득구분코_150만원이상-200만원미만">150만원 이상~200만원 미만</option>
+                                    <option value="아동_가구소득구분코_200만원이상-250만원미만">200만원 이상~250만원 미만</option>
+                                    <option value="아동_가구소득구분코_250만원이상-300만원미만">250만원 이상~300만원 미만</option>
+                                    <option value="아동_가구소득구분코_300만원이상">300만원 이상</option>
+                                </select>
+
+                                <span style="color:blue"><br>기초생활수급유형 </span>
+                                <label><input type="radio" name="supply" value="아동_기초생활수급유_비수급권대상"/>비수급권대상</label>
+                                <label><input type="radio" name="supply" value="아동_기초생활수급유_수급권대상"/>수급권대상</label>
+                                <label><input type="radio" name="supply" value="None" checked="checked"/>정보없음</label>
+
+                                <span style="color:blue"><br>접수경로구분코드 </span>
+                                <select name="route">
+                                    <option value="None" selected> ========== 선택 ==========</option>
+                                    <option value="신고_접수경로구분코_112">112</option>
+                                    <option value="신고_접수경로구분코_119">119</option>
+                                    <option value="신고_접수경로구분코_129">129</option>
+                                    <option value="신고_접수경로구분코_1366">1366</option>
+                                    <option value="신고_접수경로구분코_기타">기타</option>
+                                    <option value="신고_접수경로구분코_내방">내방</option>
+                                    <option value="신고_접수경로구분코_방문신고">방문신고</option>
+                                    <option value="신고_접수경로구분코_상담원 인지신고">상담원 인지신고</option>
+                                    <option value="신고_접수경로구분코_아동보호전문기관일반전화">아동보호전문기관일반전화</option>
+                                    <option value="신고_접수경로구분코_아동행복지원">아동행복지원</option>
+                                    <option value="신고_접수경로구분코_아동행복지원  상담원인지신고">아동행복지원 상담원인지신고</option>
+                                    <option value="신고_접수경로구분코_아동행복지원  읍면동인지신고">아동행복지원 읍면동인지신고</option>
+                                    <option value="신고_접수경로구분코_인터넷">인터넷</option>
+                                    <option value="신고_접수경로구분코_일반전화">일반전화</option>
+                                    <option value="신고_접수경로구분코_타기관통보">타기관통보</option>
+                                </select>
+
+                                <span style="color:blue"><br>신고자유형구분 </span>
+                                <label><input type="radio" name="reporter" value="신고_신고자유형구분_비신고의무자"/>비수급권대상</label>
+                                <label><input type="radio" name="reporter" value="신고_신고자유형구분_신고의무자"/>수급권대상</label>
+                                <label><input type="radio" name="reporter" value="None" checked="checked"/>정보없음</label>
+
+                                <span style="color:blue"><br>집단시설내사건 </span>
+                                <label><input type="radio" name="group" value="신고_집단시설내사건_교육기관"/>교육기관</label>
+                                <label><input type="radio" name="group" value="신고_집단시설내사건_시설"/>시설</label>
+                                <label><input type="radio" name="group" value="신고_집단시설내사건_어린이집"/>어린이집</label>
+                                <label><input type="radio" name="group" value="신고_집단시설내사건_기타"/>기타</label>
+                                <label><input type="radio" name="group" value="신고_집단시설내사건_해당사항없음"/>해당사항없음</label>
+                                <label><input type="radio" name="group" value="None" checked="checked"/>정보없음</label>
+
+                                <span style="color:blue"><br>재신고여부 </span>
+                                <label><input type="radio" name="re" value="신고_재신고여부_1_없음"/>없음</label>
+                                <label><input type="radio" name="re" value="신고_재신고여부_1_있음"/>있음</label>
+                                <label><input type="radio" name="re" value="None" checked="checked"/>정보없음</label>
+
+                                <span style="color:blue"><br>신고접수유형 </span>
+                                <select name="report_type_1">
+                                    <option value="None" selected> ========== 선택 ==========</option>
+                                    <option value="신고_접수유형_아동학대 의심사례">아동학대 의심사례</option>
+                                    <option value="신고_접수유형_일반상담">일반상담</option>
+                                    <option value="신고_접수유형_피해아동보호명령을 통한 인지">피해아동보호명령을 통한 인지</option>
+                                    <option value="신고_접수유형_학대행위자 법원명령을 통한 인지(임시조치, 보호처분)">학대행위자 볍원명령을 통한 인지(임시조치,
+                                        보호처분)
+                                    </option>
+                                </select>
+
+                                <span style="color:blue"><br>피해아동상태구분 </span>
+                                <label><input type="radio" name="child" value="신고_피해아동상태구_해당사항없음"/>해당사항없음</label>
+                                <label><input type="radio" name="child" value="신고_피해아동상태구_아동사망"/>아동사망</label>
+                                <label><input type="radio" name="child" value="신고_피해아동상태구_중상해(의식불명 포함)"/>중상해(의식불명
+                                    포함)</label>
+                                <label><input type="radio" name="child" value="None" checked="checked"/>정보없음</label>
+
+
+                                <span style="color:blue"><br>행위자아동관계 </span>
+                                <select name="relationship">
+                                    <option value="None" selected> ========== 선택 ==========</option>
+                                    <option value="신대_행위자아동관계_계모">계모</option>
+                                    <option value="신대_행위자아동관계_계부">계부</option>
+                                    <option value="신대_행위자아동관계_기타">기타</option>
+                                    <option value="신대_행위자아동관계_기타시설종사자">기타시설종사자</option>
+                                    <option value="신대_행위자아동관계_낯선사람">낯선사람</option>
+                                    <option value="신대_행위자아동관계_베이비시터(아이돌보미)">베이비시터(아이돌보미)</option>
+                                    <option value="신대_행위자아동관계_부모의 동거인">부모의 동거인</option>
+                                    <option value="신대_행위자아동관계_아동복지시설종사자">아동복지시설종사자</option>
+                                    <option value="신대_행위자아동관계_아동을 보호ㆍ양육ㆍ교육하거나 그 의무가 있는 자">아동을 보호ㆍ양육ㆍ교육하거나 그 의무가 있는 자
+                                    </option>
+                                    <option value="신대_행위자아동관계_양모">양모</option>
+                                    <option value="신대_행위자아동관계_양부">양부</option>
+                                    <option value="신대_행위자아동관계_어린이집(보육교직원, 종사자)">어린이집(보육교직원, 종사자)</option>
+                                    <option value="신대_행위자아동관계_외조모">외조모</option>
+                                    <option value="신대_행위자아동관계_외조부">외조부</option>
+                                    <option value="신대_행위자아동관계_위탁모">위탁모</option>
+                                    <option value="신대_행위자아동관계_위탁부">위탁부</option>
+                                    <option value="신대_행위자아동관계_유치원(교사,교직원, 종사자)">유치원(교사,교직원, 종사자)</option>
+                                    <option value="신대_행위자아동관계_이웃">이웃</option>
+                                    <option value="신대_행위자아동관계_청소년관련시설종사자">청소년관련시설종사자</option>
+                                    <option value="신대_행위자아동관계_친모">친모</option>
+                                    <option value="신대_행위자아동관계_친부">친부</option>
+                                    <option value="신대_행위자아동관계_친인척">친인척</option>
+                                    <option value="신대_행위자아동관계_친조모">친조모</option>
+                                    <option value="신대_행위자아동관계_친조부">친조부</option>
+                                    <option value="신대_행위자아동관계_학교(교원, 교직원)">학교(교원, 교직원)</option>
+                                    <option value="신대_행위자아동관계_학원(강사, 종사자)">학원(강사, 종사자)</option>
+                                    <option value="신대_행위자아동관계_형제자매">형제자매</option>
+                                </select>
+
+                                <span style="color:blue"><br>아동동거여부 </span>
+                                <label><input type="radio" name="together" value="신대_아동동거여부_동거"/>동거</label>
+                                <label><input type="radio" name="together" value="신대_아동동거여부_비동거"/>비동거</label>
+                                <label><input type="radio" name="together" value="None" checked="checked"/>정보없음</label>
+
+                                <span style="color:blue"><br>접수유형 </span>
+                                <label><input type="radio" name="report_type" value="신대_접수유형_동일신고"/>동일신고</label>
+                                <label><input type="radio" name="report_type" value="신대_접수유형_아동학대 의심사례"/>아동학대
+                                    의심사례</label>
+                                <label><input type="radio" name="report_type"
+                                              value="신대_접수유형_응급아동학대의심사례"/>응급아동학대의심사례</label>
+                                <label><input type="radio" name="report_type" value="신대_접수유형_일반상담"/>일반상담</label>
+                                <label><input type="radio" name="report_type" value="None"
+                                              checked="checked"/>정보없음</label>
+
+                            </div>
+
+                            <div class="right-box">
+                                <span style="color:blue"><br>아동특성 </span>
+                                <label><input type="checkbox" name="characteristic" value="아특_신체질환및장애"/>신체질환및장애</label>
+                                <label><input type="checkbox" name="characteristic" value="아특_사회성문제"/>사회성문제</label>
+                                <label><input type="checkbox" name="characteristic" value="아특_사회적고립"/>사회적고립</label>
+                                <label><input type="checkbox" name="characteristic" value="아특_뇌병변장애"/>뇌병변장애</label>
+                                <label><input type="checkbox" name="characteristic" value="아특_언어문제"/>언어문제</label>
+                                <label><input type="checkbox" name="characteristic" value="아특_안면장애"/>안면장애</label>
+                                <label><input type="checkbox" name="characteristic" value="아특_신장장애"/>신장장애</label>
+                                <label><input type="checkbox" name="characteristic" value="아특_심장장애"/>심장장애</label>
+                                <label><input type="checkbox" name="characteristic" value="아특_시각장애"/>시각장애</label>
+                                <label><input type="checkbox" name="characteristic" value="아특_간장애"/>간장애</label>
+                                <label><input type="checkbox" name="characteristic" value="아특_장루·요루장애"/>장루·요루장애</label>
+                                <label><input type="checkbox" name="characteristic" value="아특_자폐성장애"/>자폐성장애</label>
+                                <label><input type="checkbox" name="characteristic" value="아특_충동"/>충동</label>
+                                <label><input type="checkbox" name="characteristic" value="아특_대소변문제"/>대소변문제</label>
+                                <label><input type="checkbox" name="characteristic" value="아특_불안"/>불안</label>
+                                <label><input type="checkbox" name="characteristic" value="아특_양육지식및기술"/>양육지식및기술</label>
+                                <label><input type="checkbox" name="characteristic" value="아특_부부및가족갈등"/>부부및가족갈등</label>
+                                <label><input type="checkbox" name="characteristic" value="아특_난(難)독해"/>난(難)독해</label>
+                                <label><input type="checkbox" name="characteristic" value="아특_인터넷(게임)"/>인터넷(게임)</label>
+                                <label><input type="checkbox" name="characteristic" value="아특_전과력"/>전과력</label>
+                                <label><input type="checkbox" name="characteristic" value="아특_학교부적응"/>학교부적응</label>
+                                <label><input type="checkbox" name="characteristic" value="아특_뇌전증장애"/>뇌전증장애</label>
+                                <label><input type="checkbox" name="characteristic" value="아특_과잉행동"/>과잉행동</label>
+                                <label><input type="checkbox" name="characteristic" value="아특_낮은자아존중감"/>낮은자아존중감</label>
+                                <label><input type="checkbox" name="characteristic" value="아특_청각장애"/>청각장애</label>
+                                <label><input type="checkbox" name="characteristic" value="아특_원치않는아동"/>원치않는아동</label>
+                                <label><input type="checkbox" name="characteristic" value="아특_반항"/>반항</label>
+                                <label><input type="checkbox" name="characteristic" value="아특_폭력행동"/>폭력행동</label>
+                                <label><input type="checkbox" name="characteristic" value="아특_기타"/>기타</label>
+                                <label><input type="checkbox" name="characteristic" value="아특_잦은병치례"/>잦은병치례</label>
+                                <label><input type="checkbox" name="characteristic" value="아특_배우자폭력"/>배우자폭력</label>
+                                <label><input type="checkbox" name="characteristic" value="아특_약물"/>약물</label>
+                                <label><input type="checkbox" name="characteristic" value="아특_무력감"/>무력감</label>
+                                <label><input type="checkbox" name="characteristic" value="아특_비행집단활동"/>비행집단활동</label>
+                                <label><input type="checkbox" name="characteristic" value="아특_흡연"/>흡연</label>
+                                <label><input type="checkbox" name="characteristic" value="아특_언어장애"/>언어장애</label>
+                                <label><input type="checkbox" name="characteristic" value="아특_오락중독"/>오락중독</label>
+                                <label><input type="checkbox" name="characteristic" value="아특_정신장애"/>정신장애</label>
+                                <label><input type="checkbox" name="characteristic" value="아특_기타장애"/>기타장애</label>
+                                <label><input type="checkbox" name="characteristic" value="아특_불건전한또래관"/>불건전한또래관</label>
+                                <label><input type="checkbox" name="characteristic" value="아특_호흡기장애"/>호흡기장애</label>
+                                <label><input type="checkbox" name="characteristic" value="아특_경제적어려움"/>경제적어려움</label>
+                                <label><input type="checkbox" name="characteristic" value="아특_학습문제"/>학습문제</label>
+                                <label><input type="checkbox" name="characteristic" value="아특_거짓말"/>거짓말</label>
+                                <label><input type="checkbox" name="characteristic" value="아특_가출"/>가출</label>
+                                <label><input type="checkbox" name="characteristic" value="아특_존속학대"/>존속학대</label>
+                                <label><input type="checkbox" name="characteristic" value="아특_성격및기질문제"/>성격및기질문제</label>
+                                <label><input type="checkbox" name="characteristic" value="아특_음주"/>음주</label>
+                                <label><input type="checkbox" name="characteristic" value="아특_장애의심"/>장애의심</label>
+                                <label><input type="checkbox" name="characteristic" value="아특_정서문제"/>정서문제</label>
+                                <label><input type="checkbox" name="characteristic" value="아특_무단결과"/>무단결과</label>
+                                <label><input type="checkbox" name="characteristic" value="아특_정신질환및장애"/>정신질환및장애</label>
+                                <label><input type="checkbox" name="characteristic" value="아특_잦은결석"/>잦은결석</label>
+                                <label><input type="checkbox" name="characteristic" value="아특_우울"/>우울</label>
+                                <label><input type="checkbox" name="characteristic" value="아특_성문제"/>성문제</label>
+                                <label><input type="checkbox" name="characteristic" value="아특_나태(무기력)"/>나태(무기력)</label>
+                                <label><input type="checkbox" name="characteristic" value="아특_부적절한양육태"/>부적절한양육태도</label>
+                                <label><input type="checkbox" name="characteristic" value="아특_신체발달지연"/>신체발달지연</label>
+                                <label><input type="checkbox" name="characteristic" value="아특_급만성질병"/>급만성질병</label>
+                                <label><input type="checkbox" name="characteristic" value="아특_스트레스"/>스트레스</label>
+                                <label><input type="checkbox" name="characteristic" value="아특_애착문제"/>애착문제</label>
+                                <label><input type="checkbox" name="characteristic" value="아특_종교문제"/>종교문제</label>
+                                <label><input type="checkbox" name="characteristic" value="아특_주의산만"/>주의산만</label>
+                                <label><input type="checkbox" name="characteristic" value="아특_틱장애"/>틱장애</label>
+                                <label><input type="checkbox" name="characteristic" value="아특_도박_게임중독"/>도박및게임중독</label>
+                                <label><input type="checkbox" name="characteristic" value="아특_알콜남용"/>알콜남용</label>
+                                <label><input type="checkbox" name="characteristic" value="아특_공격성"/>공격성</label>
+                                <label><input type="checkbox" name="characteristic" value="아특_지체장애"/>자체장애</label>
+                                <label><input type="checkbox" name="characteristic" value="아특_어릴적학대경험"/>어릴적학대경험</label>
+                                <label><input type="checkbox" name="characteristic" value="아특_도벽"/>도벽</label>
+                                <label><input type="checkbox" name="characteristic" value="아특_허약"/>허약</label>
+                                <label><input type="checkbox" name="characteristic" value="아특_탐식및결식"/>탐식및결식</label>
+                                <label><input type="checkbox" name="characteristic" value="아특_늦은귀가"/>늦은귀가</label>
+                                <label><input type="checkbox" name="characteristic" value="아특_대인관계기피"/>대인관계기피</label>
+                                <label><input type="checkbox" name="characteristic" value="아특_위생문제"/>위생문제</label>
+                                <label><input type="checkbox" name="characteristic" value="아특_영양결핍"/>영양결핍</label>
+                                <label><input type="checkbox" name="characteristic" value="아특_지적장애"/>지적장애</label>
+                                <label><input type="checkbox" name="characteristic" value="아특_난(難)작문"/>난(難)작문</label>
+                                <label><input type="checkbox" name="characteristic" value="아특_특성없음" checked="checked"/>특성없음</label>
+
+                                <span style="color:blue"><br>신고내용</span>
+                                <textarea name="text"> </textarea>
+
+                                <button type="submit" style="color:black; margin:10px 20px 50px 436px;">검사하기</button>
+                            </div>
+                        </form>
+                    {% endif %}
                 </div>
             </div>
         </div>
-   </nav>
 
-
-    <div id="fh5co-about" class="fh5co-section" style="background-image: url(/static/images/code2.png);">
-        <!--div class="overlay"></div-->
-      <div class="container">
-            <div class="checks">
-                {% if model_results %}
-                    <div class="left-box" style="color:black">
-                        <p style="color:black">입력 데이터</p>
-                        {% for i in input_data %}
-                            {{ i }}
-                            <br>
-                        {% endfor %}
-                        {{ Report_text }}
-                    </div>
-                    <div class="right-box" style="color:black">
-                        <span class="result_lable">
-                            {% if (( model_results * 0.7  + text_NLP_results * 100 *0.3) | int | round)>=80 %}
-                                분석결과 : {{ (model_results * 0.7 + text_NLP_results * 100 *0.3 | round(2)) }} %. 지금 즉시 해당 아동에게 도움이 필요합니다. 바로 조사에 나서주세요
-                            {% elif (( model_results * 0.7  + text_NLP_results * 100 *0.3) | int | round)<80 and (( model_results * 0.7  + text_NLP_results * 100 *0.3) | int | round)>=60%}
-                                분석결과 : {{ (model_results * 0.7 + text_NLP_results * 100 *0.3 | round(2)) }} %. 6시간 이내로 조사해 주세요
-                            {% elif (( model_results * 0.7  + text_NLP_results * 100 *0.3) | int | round)<60 and (( model_results * 0.7  + text_NLP_results * 100 *0.3) | int | round)>=40%}
-                                분석결과 : {{ (model_results * 0.7 + text_NLP_results * 100 *0.3 | round(2)) }} %. 12시간 이내로 조사해 주세요
-                            {% elif (( model_results * 0.7  + text_NLP_results * 100 *0.3) | int | round)<40 and (( model_results * 0.7  + text_NLP_results * 100 *0.3) | int | round)>=20%}
-                                분석결과 : {{ (model_results * 0.7 + text_NLP_results * 100 * 0.3 | round(2)) }} %. 24시간 이내로 조사해 주세요
-                            {% else %}
-                                분석결과 : {{ (model_results * 0.7 + text_NLP_results * 100 *0.3 | round(2)) }} %. 72시간 이내로 조사해 주세요
-                            {% endif %}
-                        </span>
-                        <br><input type="reset" style="color:black;" value="재입력" onclick="location.href='/putData'">
-                    </div>
-                {% else %}
-                    <form action="/predict" method="POST">
-                        <div class="left-box" style="line-height:160%;">
-                            <span style="color:blue"><br>성별 </span>
-                            <!--<!label>과 함께쓰면 텍스트를 눌러도 라디오박스가 체크된다.-->
-                            <label><input type="radio" name="sex" value="아동정보_성별_M" />남</label>
-                            <label><input type="radio" name="sex" value="아동정보_성별_F" />여</label>
-                            <label><input type="radio" name="sex" value="None" checked="checked" />정보없음</label>
-
-                            <span style="color:blue"><br>생년월일 </span>
-                            <input name="birthday" value="" type="text" id="birthday" placeholder="ex)19901231" />
-
-                            <span style="color:blue"><br>내국인여부 </span>
-                            <label><input type="radio" name="domestic" value="아동_내국인여부_내국인" />내국인</label>
-                            <label><input type="radio" name="domestic" value="아동_내국인여부_무국적" />무국적</label>
-                            <label><input type="radio" name="domestic" value="아동_내국인여부_외국인" />외국인</label>
-                            <label><input type="radio" name="domestic" value="None" checked="checked" />정보없음</label>
-
-                            <span style="color:blue"><br>최종학력 </span>
-                            <select name="edu">
-                                <option value="None" selected> ========== 선택 ==========</option>
-                                <option value="아동_최종학력_고등졸업">고등졸업</option>
-                                <option value="아동_최종학력_고등중퇴">고등중퇴</option>
-                                <option value="아동_최종학력_대학원이상">대학원이상</option>
-                                <option value="아동_최종학력_대학졸업">대학졸업</option>
-                                <option value="아동_최종학력_대학중퇴">대학중퇴</option>
-                                <option value="아동_최종학력_무학">무학</option>
-                                <option value="아동_최종학력_재학중">재학중</option>
-                                <option value="아동_최종학력_중등졸업">중등졸업</option>
-                                <option value="아동_최종학력_중등중퇴">중등중퇴</option>
-                                <option value="아동_최종학력_초등졸업">초등졸업</option>
-                                <option value="아동_최종학력_초등중퇴">초등중퇴</option>
-                            </select>
-
-                            <span style="color:blue"><br>직업유형 </span>
-                            <select name="job">
-                                <option value="None" selected> ========== 선택 ==========</option>
-                                <option value="아동_직업유형_고등학교">고등학교</option>
-                                <option value="아동_직업유형_관리자">관리자</option>
-                                <option value="아동_직업유형_군인">군인</option>
-                                <option value="아동_직업유형_기능원 및 관련 기능 종사자">기능원 및 관련 기능 종사자</option>
-                                <option value="아동_직업유형_기술공 및 준전문가">기술공 및 준전문가</option>
-                                <option value="아동_직업유형_농림어업숙련종사자">농림어업숙련종사자</option>
-                                <option value="아동_직업유형_단순노무종사자">단순노무종사자</option>
-                                <option value="아동_직업유형_사무종사자">사무종사자</option>
-                                <option value="아동_직업유형_서비스 및 판매종사자">서비스 및 판매종사자</option>
-                                <option value="아동_직업유형_어린이집">어린이집</option>
-                                <option value="아동_직업유형_유치원">유치원</option>
-                                <option value="아동_직업유형_장치·기계조작 및 조립 종사자">장치·기계조작 및 조립 종사자</option>
-                                <option value="아동_직업유형_전문가">전문가</option>
-                                <option value="아동_직업유형_중학교">중학교</option>
-                                <option value="아동_직업유형_초등학교">초등학교</option>
-                                <option value="아동_직업유형_무직">무직</option>
-                                <option value="아동_직업유형_기타">기타</option>
-                            </select>
-
-                            <span style="color:blue"><br>거주상태 </span>
-                            <select name="residence">
-                                <option value="None" selected> ========== 선택 ==========</option>
-                                <option value="아동_거주상태_전세">전세</option>
-                                <option value="아동_거주상태_월세">월세</option>
-                                <option value="아동_거주상태_보증금(전세)+월세">보증금(전세)+월세</option>
-                                <option value="아동_거주상태_자택">자택</option>
-                                <option value="아동_거주상태_영구임대아파트  또는 영구임대주택">영구임대아파트 또는 영구임대주택</option>
-                                <option value="아동_거주상태_보호시설">보호시설</option>
-                                <option value="아동_거주상태_무상">무상</option>
-                                <option value="아동_거주상태_기타">기타</option>
-                            </select>
-
-                            <span style="color:blue"><br>친권자유형 </span>
-                            <select name="parents">
-                                <option value="None" selected> ========== 선택 ==========</option>
-                                <option value="아동_친권자유형_양모">양모</option>
-                                <option value="아동_친권자유형_양부">양부</option>
-                                <option value="아동_친권자유형_양부모">양부모</option>
-                                <option value="아동_친권자유형_친권자 없음">친권자 없음</option>
-                                <option value="아동_친권자유형_친모">친모</option>
-                                <option value="아동_친권자유형_친부">친부</option>
-                                <option value="아동_친권자유형_친부모">친부모</option>
-                                <option value="아동_친권자유형_후견인 없음">후견인 없음</option>
-                            </select>
-
-                            <span style="color:blue"><br>가족유형 </span>
-                            <select name="family">
-                                <option value="None" selected>==== 선택 ====</option>
-                                <option value="아동_가족 유형_친부모가정">친부모가정</option>
-                                <option value="아동_가족 유형_재혼가정">재혼가정</option>
-                                <option value="아동_가족 유형_부자가족(별거)">부자가족(별거)</option>
-                                <option value="아동_가족 유형_동거(사실혼포함)">동거(사실혼포함)</option>
-                                <option value="아동_가족 유형_모자가족(이혼)">모자가족(이혼)</option>
-                                <option value="아동_가족 유형_부자가족(이혼)">부자가족(이혼)</option>
-                                <option value="아동_가족 유형_부자가족(가출)">부자가족(가출)</option>
-                                <option value="아동_가족 유형_시설보호">시설보호</option>
-                                <option value="아동_가족 유형_모자가족(별거)">모자가족(별거)</option>
-                                <option value="아동_가족 유형_모자가족(사별)">모자가족(사별)</option>
-                                <option value="아동_가족 유형_부자가족(사별)">부자가족(사별)</option>
-                                <option value="아동_가족 유형_친인척보호">친인척보호</option>
-                                <option value="아동_가족 유형_미혼부·모가정">미혼부·모가정</option>
-                                <option value="아동_가족 유형_입양가정">입양가정</option>
-                                <option value="아동_가족 유형_위탁가정">위탁가정</option>
-                                <option value="아동_가족 유형_모자가족(가출)">모자가족(가출)</option>
-                                <option value="아동_가족 유형_소년소녀가정">소년소녀가정</option>
-                                <option value="아동_가족 유형_기타">기타</option>
-                            </select>
-
-                            <span style="color:blue"><br>다문화가족 </span>
-                            <label><input type="radio" name="multi_culture" value="아동_다문화가족_다문화" />다문화</label>
-                            <label><input type="radio" name="multi_culture" value="아동_다문화가족_북한이탈주민" />북한이탈주민</label>
-                            <label><input type="radio" name="multi_culture" value="아동_다문화가족_일반" />일반</label>
-                            <label><input type="radio" name="multi_culture" value="None" checked="checked" />정보없음</label>
-
-                            <span style="color:blue"><br>가구소득구분코드 </span>
-                            <select name="income">
-                                <option value="None" selected> ======== 선택 ========</option>
-                                <option value="아동_가구소득구분코_50만원미만">50만원 미만</option>
-                                <option value="아동_가구소득구분코_50만원이상~100만원미만">50만원 이상~100만원 미만</option>
-                                <option value="아동_가구소득구분코_100만원이상-150만원미만">100만원 이상~150만원 미만</option>
-                                <option value="아동_가구소득구분코_150만원이상-200만원미만">150만원 이상~200만원 미만</option>
-                                <option value="아동_가구소득구분코_200만원이상-250만원미만">200만원 이상~250만원 미만</option>
-                                <option value="아동_가구소득구분코_250만원이상-300만원미만">250만원 이상~300만원 미만</option>
-                                <option value="아동_가구소득구분코_300만원이상">300만원 이상</option>
-                            </select>
-
-                            <span style="color:blue"><br>기초생활수급유형 </span>
-                            <label><input type="radio" name="supply" value="아동_기초생활수급유_비수급권대상" />비수급권대상</label>
-                            <label><input type="radio" name="supply" value="아동_기초생활수급유_수급권대상" />수급권대상</label>
-                            <label><input type="radio" name="supply" value="None" checked="checked" />정보없음</label>
-
-                            <span style="color:blue"><br>접수경로구분코드 </span>
-                            <select name="route">
-                                <option value="None" selected> ========== 선택 ==========</option>
-                                <option value="신고_접수경로구분코_112">112</option>
-                                <option value="신고_접수경로구분코_119">119</option>
-                                <option value="신고_접수경로구분코_129">129</option>
-                                <option value="신고_접수경로구분코_1366">1366</option>
-                                <option value="신고_접수경로구분코_기타">기타</option>
-                                <option value="신고_접수경로구분코_내방">내방</option>
-                                <option value="신고_접수경로구분코_방문신고">방문신고</option>
-                                <option value="신고_접수경로구분코_상담원 인지신고">상담원 인지신고</option>
-                                <option value="신고_접수경로구분코_아동보호전문기관일반전화">아동보호전문기관일반전화</option>
-                                <option value="신고_접수경로구분코_아동행복지원">아동행복지원</option>
-                                <option value="신고_접수경로구분코_아동행복지원  상담원인지신고">아동행복지원 상담원인지신고</option>
-                                <option value="신고_접수경로구분코_아동행복지원  읍면동인지신고">아동행복지원 읍면동인지신고</option>
-                                <option value="신고_접수경로구분코_인터넷">인터넷</option>
-                                <option value="신고_접수경로구분코_일반전화">일반전화</option>
-                                <option value="신고_접수경로구분코_타기관통보">타기관통보</option>
-                            </select>
-
-                            <span style="color:blue"><br>신고자유형구분 </span>
-                            <label><input type="radio" name="reporter" value="신고_신고자유형구분_비신고의무자" />비수급권대상</label>
-                            <label><input type="radio" name="reporter" value="신고_신고자유형구분_신고의무자" />수급권대상</label>
-                            <label><input type="radio" name="reporter" value="None" checked="checked" />정보없음</label>
-
-                            <span style="color:blue"><br>집단시설내사건 </span>
-                            <label><input type="radio" name="group" value="신고_집단시설내사건_교육기관" />교육기관</label>
-                            <label><input type="radio" name="group" value="신고_집단시설내사건_시설" />시설</label>
-                            <label><input type="radio" name="group" value="신고_집단시설내사건_어린이집" />어린이집</label>
-                            <label><input type="radio" name="group" value="신고_집단시설내사건_기타" />기타</label>
-                            <label><input type="radio" name="group" value="신고_집단시설내사건_해당사항없음" />해당사항없음</label>
-                            <label><input type="radio" name="group" value="None" checked="checked" />정보없음</label>
-
-                            <span style="color:blue"><br>재신고여부 </span>
-                            <label><input type="radio" name="re" value="신고_재신고여부_1_없음" />없음</label>
-                            <label><input type="radio" name="re" value="신고_재신고여부_1_있음" />있음</label>
-                            <label><input type="radio" name="re" value="None" checked="checked" />정보없음</label>
-
-                            <span style="color:blue"><br>신고접수유형 </span>
-                            <select name="report_type_1">
-                                <option value="None" selected> ========== 선택 ==========</option>
-                                <option value="신고_접수유형_아동학대 의심사례">아동학대 의심사례</option>
-                                <option value="신고_접수유형_일반상담">일반상담</option>
-                                <option value="신고_접수유형_피해아동보호명령을 통한 인지">피해아동보호명령을 통한 인지</option>
-                                <option value="신고_접수유형_학대행위자 법원명령을 통한 인지(임시조치, 보호처분)">학대행위자 볍원명령을 통한 인지(임시조치, 보호처분)</option>
-                            </select>
-
-                            <span style="color:blue"><br>피해아동상태구분 </span>
-                            <label><input type="radio" name="child" value="신고_피해아동상태구_해당사항없음" />해당사항없음</label>
-                            <label><input type="radio" name="child" value="신고_피해아동상태구_아동사망" />아동사망</label>
-                            <label><input type="radio" name="child" value="신고_피해아동상태구_중상해(의식불명 포함)" />중상해(의식불명 포함)</label>
-                            <label><input type="radio" name="child" value="None" checked="checked" />정보없음</label>
-
-
-                            <span style="color:blue"><br>행위자아동관계 </span>
-                            <select name="relationship">
-                                <option value="None" selected> ========== 선택 ==========</option>
-                                <option value="신대_행위자아동관계_계모">계모</option>
-                                <option value="신대_행위자아동관계_계부">계부</option>
-                                <option value="신대_행위자아동관계_기타">기타</option>
-                                <option value="신대_행위자아동관계_기타시설종사자">기타시설종사자</option>
-                                <option value="신대_행위자아동관계_낯선사람">낯선사람</option>
-                                <option value="신대_행위자아동관계_베이비시터(아이돌보미)">베이비시터(아이돌보미)</option>
-                                <option value="신대_행위자아동관계_부모의 동거인">부모의 동거인</option>
-                                <option value="신대_행위자아동관계_아동복지시설종사자">아동복지시설종사자</option>
-                                <option value="신대_행위자아동관계_아동을 보호ㆍ양육ㆍ교육하거나 그 의무가 있는 자">아동을 보호ㆍ양육ㆍ교육하거나 그 의무가 있는 자</option>
-                                <option value="신대_행위자아동관계_양모">양모</option>
-                                <option value="신대_행위자아동관계_양부">양부</option>
-                                <option value="신대_행위자아동관계_어린이집(보육교직원, 종사자)">어린이집(보육교직원, 종사자)</option>
-                                <option value="신대_행위자아동관계_외조모">외조모</option>
-                                <option value="신대_행위자아동관계_외조부">외조부</option>
-                                <option value="신대_행위자아동관계_위탁모">위탁모</option>
-                                <option value="신대_행위자아동관계_위탁부">위탁부</option>
-                                <option value="신대_행위자아동관계_유치원(교사,교직원, 종사자)">유치원(교사,교직원, 종사자)</option>
-                                <option value="신대_행위자아동관계_이웃">이웃</option>
-                                <option value="신대_행위자아동관계_청소년관련시설종사자">청소년관련시설종사자</option>
-                                <option value="신대_행위자아동관계_친모">친모</option>
-                                <option value="신대_행위자아동관계_친부">친부</option>
-                                <option value="신대_행위자아동관계_친인척">친인척</option>
-                                <option value="신대_행위자아동관계_친조모">친조모</option>
-                                <option value="신대_행위자아동관계_친조부">친조부</option>
-                                <option value="신대_행위자아동관계_학교(교원, 교직원)">학교(교원, 교직원)</option>
-                                <option value="신대_행위자아동관계_학원(강사, 종사자)">학원(강사, 종사자)</option>
-                                <option value="신대_행위자아동관계_형제자매">형제자매</option>
-                            </select>
-
-                            <span style="color:blue"><br>아동동거여부 </span>
-                            <label><input type="radio" name="together" value="신대_아동동거여부_동거" />동거</label>
-                            <label><input type="radio" name="together" value="신대_아동동거여부_비동거" />비동거</label>
-                            <label><input type="radio" name="together" value="None" checked="checked" />정보없음</label>
-
-                            <span style="color:blue"><br>접수유형 </span>
-                            <label><input type="radio" name="report_type" value="신대_접수유형_동일신고" />동일신고</label>
-                            <label><input type="radio" name="report_type" value="신대_접수유형_아동학대 의심사례" />아동학대 의심사례</label>
-                            <label><input type="radio" name="report_type" value="신대_접수유형_응급아동학대의심사례" />응급아동학대의심사례</label>
-                            <label><input type="radio" name="report_type" value="신대_접수유형_일반상담" />일반상담</label>
-                            <label><input type="radio" name="report_type" value="None" checked="checked" />정보없음</label>
-
-                        </div>
-
-                        <div class="right-box">
-                            <span style="color:blue"><br>아동특성 </span>
-                            <label><input type="checkbox" name="characteristic" value="아특_신체질환및장애" />신체질환및장애</label>
-                            <label><input type="checkbox" name="characteristic" value="아특_사회성문제" />사회성문제</label>
-                            <label><input type="checkbox" name="characteristic" value="아특_사회적고립" />사회적고립</label>
-                            <label><input type="checkbox" name="characteristic" value="아특_뇌병변장애" />뇌병변장애</label>
-                            <label><input type="checkbox" name="characteristic" value="아특_언어문제" />언어문제</label>
-                            <label><input type="checkbox" name="characteristic" value="아특_안면장애" />안면장애</label>
-                            <label><input type="checkbox" name="characteristic" value="아특_신장장애" />신장장애</label>
-                            <label><input type="checkbox" name="characteristic" value="아특_심장장애" />심장장애</label>
-                            <label><input type="checkbox" name="characteristic" value="아특_시각장애" />시각장애</label>
-                            <label><input type="checkbox" name="characteristic" value="아특_간장애" />간장애</label>
-                            <label><input type="checkbox" name="characteristic" value="아특_장루·요루장애" />장루·요루장애</label>
-                            <label><input type="checkbox" name="characteristic" value="아특_자폐성장애" />자폐성장애</label>
-                            <label><input type="checkbox" name="characteristic" value="아특_충동" />충동</label>
-                            <label><input type="checkbox" name="characteristic" value="아특_대소변문제" />대소변문제</label>
-                            <label><input type="checkbox" name="characteristic" value="아특_불안" />불안</label>
-                            <label><input type="checkbox" name="characteristic" value="아특_양육지식및기술" />양육지식및기술</label>
-                            <label><input type="checkbox" name="characteristic" value="아특_부부및가족갈등" />부부및가족갈등</label>
-                            <label><input type="checkbox" name="characteristic" value="아특_난(難)독해" />난(難)독해</label>
-                            <label><input type="checkbox" name="characteristic" value="아특_인터넷(게임)" />인터넷(게임)</label>
-                            <label><input type="checkbox" name="characteristic" value="아특_전과력" />전과력</label>
-                            <label><input type="checkbox" name="characteristic" value="아특_학교부적응" />학교부적응</label>
-                            <label><input type="checkbox" name="characteristic" value="아특_뇌전증장애" />뇌전증장애</label>
-                            <label><input type="checkbox" name="characteristic" value="아특_과잉행동" />과잉행동</label>
-                            <label><input type="checkbox" name="characteristic" value="아특_낮은자아존중감" />낮은자아존중감</label>
-                            <label><input type="checkbox" name="characteristic" value="아특_청각장애" />청각장애</label>
-                            <label><input type="checkbox" name="characteristic" value="아특_원치않는아동" />원치않는아동</label>
-                            <label><input type="checkbox" name="characteristic" value="아특_반항" />반항</label>
-                            <label><input type="checkbox" name="characteristic" value="아특_폭력행동" />폭력행동</label>
-                            <label><input type="checkbox" name="characteristic" value="아특_기타" />기타</label>
-                            <label><input type="checkbox" name="characteristic" value="아특_잦은병치례" />잦은병치례</label>
-                            <label><input type="checkbox" name="characteristic" value="아특_배우자폭력" />배우자폭력</label>
-                            <label><input type="checkbox" name="characteristic" value="아특_약물" />약물</label>
-                            <label><input type="checkbox" name="characteristic" value="아특_무력감" />무력감</label>
-                            <label><input type="checkbox" name="characteristic" value="아특_비행집단활동" />비행집단활동</label>
-                            <label><input type="checkbox" name="characteristic" value="아특_흡연" />흡연</label>
-                            <label><input type="checkbox" name="characteristic" value="아특_언어장애" />언어장애</label>
-                            <label><input type="checkbox" name="characteristic" value="아특_오락중독" />오락중독</label>
-                            <label><input type="checkbox" name="characteristic" value="아특_정신장애" />정신장애</label>
-                            <label><input type="checkbox" name="characteristic" value="아특_기타장애" />기타장애</label>
-                            <label><input type="checkbox" name="characteristic" value="아특_불건전한또래관" />불건전한또래관</label>
-                            <label><input type="checkbox" name="characteristic" value="아특_호흡기장애" />호흡기장애</label>
-                            <label><input type="checkbox" name="characteristic" value="아특_경제적어려움" />경제적어려움</label>
-                            <label><input type="checkbox" name="characteristic" value="아특_학습문제" />학습문제</label>
-                            <label><input type="checkbox" name="characteristic" value="아특_거짓말" />거짓말</label>
-                            <label><input type="checkbox" name="characteristic" value="아특_가출" />가출</label>
-                            <label><input type="checkbox" name="characteristic" value="아특_존속학대" />존속학대</label>
-                            <label><input type="checkbox" name="characteristic" value="아특_성격및기질문제" />성격및기질문제</label>
-                            <label><input type="checkbox" name="characteristic" value="아특_음주" />음주</label>
-                            <label><input type="checkbox" name="characteristic" value="아특_장애의심" />장애의심</label>
-                            <label><input type="checkbox" name="characteristic" value="아특_정서문제" />정서문제</label>
-                            <label><input type="checkbox" name="characteristic" value="아특_무단결과" />무단결과</label>
-                            <label><input type="checkbox" name="characteristic" value="아특_정신질환및장애" />정신질환및장애</label>
-                            <label><input type="checkbox" name="characteristic" value="아특_잦은결석" />잦은결석</label>
-                            <label><input type="checkbox" name="characteristic" value="아특_우울" />우울</label>
-                            <label><input type="checkbox" name="characteristic" value="아특_성문제" />성문제</label>
-                            <label><input type="checkbox" name="characteristic" value="아특_나태(무기력)" />나태(무기력)</label>
-                            <label><input type="checkbox" name="characteristic" value="아특_부적절한양육태" />부적절한양육태도</label>
-                            <label><input type="checkbox" name="characteristic" value="아특_신체발달지연" />신체발달지연</label>
-                            <label><input type="checkbox" name="characteristic" value="아특_급만성질병" />급만성질병</label>
-                            <label><input type="checkbox" name="characteristic" value="아특_스트레스" />스트레스</label>
-                            <label><input type="checkbox" name="characteristic" value="아특_애착문제" />애착문제</label>
-                            <label><input type="checkbox" name="characteristic" value="아특_종교문제" />종교문제</label>
-                            <label><input type="checkbox" name="characteristic" value="아특_주의산만" />주의산만</label>
-                            <label><input type="checkbox" name="characteristic" value="아특_틱장애" />틱장애</label>
-                            <label><input type="checkbox" name="characteristic" value="아특_도박_게임중독" />도박및게임중독</label>
-                            <label><input type="checkbox" name="characteristic" value="아특_알콜남용" />알콜남용</label>
-                            <label><input type="checkbox" name="characteristic" value="아특_공격성" />공격성</label>
-                            <label><input type="checkbox" name="characteristic" value="아특_지체장애" />자체장애</label>
-                            <label><input type="checkbox" name="characteristic" value="아특_어릴적학대경험" />어릴적학대경험</label>
-                            <label><input type="checkbox" name="characteristic" value="아특_도벽" />도벽</label>
-                            <label><input type="checkbox" name="characteristic" value="아특_허약" />허약</label>
-                            <label><input type="checkbox" name="characteristic" value="아특_탐식및결식" />탐식및결식</label>
-                            <label><input type="checkbox" name="characteristic" value="아특_늦은귀가" />늦은귀가</label>
-                            <label><input type="checkbox" name="characteristic" value="아특_대인관계기피" />대인관계기피</label>
-                            <label><input type="checkbox" name="characteristic" value="아특_위생문제" />위생문제</label>
-                            <label><input type="checkbox" name="characteristic" value="아특_영양결핍" />영양결핍</label>
-                            <label><input type="checkbox" name="characteristic" value="아특_지적장애" />지적장애</label>
-                            <label><input type="checkbox" name="characteristic" value="아특_난(難)작문" />난(難)작문</label>
-                            <label><input type="checkbox" name="characteristic" value="아특_특성없음" checked="checked"/>특성없음</label>
-
-                            <span style="color:blue"><br>신고내용</span>
-                            <textarea name = "text"> </textarea>
-
-                            <button type="submit" style="color:black; margin:10px 20px 50px 436px;">검사하기</button>
-                        </div>
-                    </form>
-                {% endif %}
-            </div>
-      </div>
-   </div>
-
-</body>
+    </body>
 {% endblock %}
